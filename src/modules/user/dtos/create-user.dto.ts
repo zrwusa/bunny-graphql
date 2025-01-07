@@ -8,6 +8,6 @@ export class CreateUserDto {
   @Field()
   email!: string;
 
-  @Field({ nullable: true })
-  provider: string;
+  @Field({ nullable: false })
+  password!: string;
 }

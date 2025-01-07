@@ -21,8 +21,8 @@ import {
 @Entity({ name: 'user' })
 export class User {
   @PrimaryColumn({ type: 'bigint' })
-  @IdField()
-  @Field()
+  @IdField() // Generalize the id field
+  @Field() // GraphQL requires this Field decorator to be used alone
   id!: string;
 
   @Column()
@@ -52,7 +52,6 @@ export class User {
 
   @UpdatedAtField()
   updatedAt!: Date;
-
   @OneToOne(() => UserSetting)
   @JoinColumn()
   @Field({ nullable: true })

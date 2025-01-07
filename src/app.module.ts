@@ -9,16 +9,17 @@ import { UserSetting } from './modules/user/entities/user-setting.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Make ConfigModule globally available throughout the application
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'generated/schema.gql',
     }),
-    ConfigModule.forRoot({
-      isGlobal: true, // Make ConfigModule globally available throughout the application
-    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
+        // Transform non-injectable objects into providers using useValue and useFactory
         return {
           type: 'postgres',
           host: configService.get('POSTGRES_HOST'),

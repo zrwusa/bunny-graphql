@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type UserSetting {
+  id: String!
   userId: String!
   receiveNotifications: Boolean!
   receiveEmails: Boolean!
@@ -31,7 +32,7 @@ type Mutation {
 input CreateUserDto {
   username: String!
   email: String!
-  provider: String
+  password: String!
 }
 
 input CreateUserSettingsDto {

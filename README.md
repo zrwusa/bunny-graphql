@@ -47,32 +47,38 @@ $ npm run test:cov
 ### Get users
 ```graphql
 query {
-  getUsers {
-    id
-    username
-    provider
-    settings {
-      userId
-      receiveEmails
-      receiveNotifications
+    getUsers {
+        id
+        username
+        provider
+        settings {
+            userId
+            receiveEmails
+            receiveNotifications
+        }
     }
-  }
 }
-
 ```
 
 ### Create user
 ```graphql
 mutation {
-  createUser(createUserDto: { username: "xxx", email: "xxx@gmail.com" }) {
-    username
-    id
-    settings {
-      userId
-      receiveEmails
+    createUser(
+        createUserDto: {
+            username: "xxx"
+            password: "Xxx123"
+            email: "xxx@gmail.com"
+        }
+    ) {
+        username
+        id
+        settings {
+            userId
+            receiveEmails
+        }
     }
-  }
 }
+
 ```
 ### Get user by id
 ```graphql
@@ -83,7 +89,6 @@ query {
     email
   }
 }
-
 ```
 
 
@@ -91,15 +96,15 @@ query {
 
 ```graphql
 mutation {
-  createUserSettings(
-    createUserSettingsDto: { userId: "905081365494623249", receiveEmails: true }
-  ) {
-    userId
-    receiveEmails
-    receiveNotifications
-  }
+    createUserSettings(
+        createUserSettingsDto: { userId: "461131055522593811", receiveEmails: true }
+    ) {
+        id
+        userId
+        receiveEmails
+        receiveNotifications
+    }
 }
-
 ```
 ## Deployment
 

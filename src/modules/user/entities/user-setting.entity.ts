@@ -1,10 +1,17 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { CreatedAtField, IdField, UpdatedAtField } from '../../../common';
+import { generateUuNumId } from '../../../utils';
 
 @Entity({ name: 'user_settings' })
 @ObjectType()
 export class UserSetting {
-  @PrimaryColumn({ name: 'user_id' })
+  @PrimaryColumn({ type: 'bigint' })
+  @IdField() // Generalize the id field
+  @Field() // GraphQL requires this Field decorator to be used alone
+  id!: string;
+
+  @Column({ name: 'user_id' })
   @Field()
   userId: string;
 
@@ -15,4 +22,16 @@ export class UserSetting {
   @Column({ default: false, name: 'receive_emails' })
   @Field({ defaultValue: false })
   receiveEmails: boolean;
+
+  @CreatedAtField()
+  createdAt!: Date;
+
+  @UpdatedAtField()
+  updatedAt!: Date;
+
+  // Use the BeforeInsert decorator to ensure execution before inserting data
+  @BeforeInsert()
+  async setId() {
+    this.id = generateUuNumId();
+  }
 }

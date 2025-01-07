@@ -8,10 +8,10 @@ import { UserService } from './services/user.service';
 import { UserSettingsResolver } from './resolvers/user-settings.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserSetting])],
+  imports: [TypeOrmModule.forFeature([User, UserSetting])], // The core function of TypeOrmModule.forFeature is to convert the specified entities into an Injectable Provider and register them into NestJS's dependency injection container. These converted Repositories can be directly injected into your services without the need to manually add them to the providers array.
   providers: [
-    UserResolver,
     UserService,
+    UserResolver,
     UserSettingService,
     UserSettingsResolver,
   ],
