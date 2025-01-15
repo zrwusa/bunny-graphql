@@ -19,14 +19,25 @@ type User {
   settings: UserSetting
 }
 
+type Product {
+  id: String!
+  brand: String
+  name: String!
+  price: Float
+  description: String
+}
+
 type Query {
   getUserById(id: String!): User
   getUsers: [User!]!
+  getProductById(id: String!): Product
+  getProducts: [Product!]!
 }
 
 type Mutation {
   createUser(createUserDto: CreateUserDto!): User!
   createUserSettings(createUserSettingsDto: CreateUserSettingsDto!): UserSetting!
+  createProduct(createProductDto: CreateProductDto!): Product!
 }
 
 input CreateUserDto {
@@ -39,4 +50,11 @@ input CreateUserSettingsDto {
   userId: String!
   receiveNotifications: Boolean = false
   receiveEmails: Boolean = false
+}
+
+input CreateProductDto {
+  name: String!
+  brand: String!
+  price: Float!
+  description: String
 }

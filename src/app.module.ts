@@ -3,9 +3,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './modules/user/user.module';
-import { User } from './modules/user/entities/user.entity';
-import { UserSetting } from './modules/user/entities/user-setting.entity';
+import { UsersModule } from './user/user.module';
+import { User } from './entities/user.entity';
+import { UserSetting } from './entities/user-setting.entity';
+import { Product } from './entities/product.entity';
+import { ProductsModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { UserSetting } from './modules/user/entities/user-setting.entity';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'generated/schema.gql',
+      debug: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -27,13 +30,14 @@ import { UserSetting } from './modules/user/entities/user-setting.entity';
           username: configService.get('POSTGRES_USERNAME'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
-          entities: [User, UserSetting],
+          entities: [User, UserSetting, Product],
           synchronize: true, // For development only, production environments should use migrations
         };
       },
       inject: [ConfigService],
     }),
     UsersModule,
+    ProductsModule,
   ],
   controllers: [],
   providers: [],

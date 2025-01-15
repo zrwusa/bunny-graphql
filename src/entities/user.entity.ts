@@ -8,14 +8,14 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
-import { generateUuNumId } from '../../../utils';
+import { generateUuNumId } from '../utils';
 import {
   CreatedAtField,
   EmailField,
   IdField,
   UpdatedAtField,
   UsernameField,
-} from '../../../common';
+} from '../common';
 
 @ObjectType()
 @Entity({ name: 'user' })
@@ -52,10 +52,15 @@ export class User {
 
   @UpdatedAtField()
   updatedAt!: Date;
+
   @OneToOne(() => UserSetting)
   @JoinColumn()
   @Field({ nullable: true })
   settings?: UserSetting;
+  //
+  // @Field()
+  // @ManyToMany(() => Post, (post) => post.user)
+  // posts: Post[];
 
   // Use the BeforeInsert decorator to ensure execution before inserting data
   @BeforeInsert()
