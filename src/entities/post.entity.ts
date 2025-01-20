@@ -26,7 +26,7 @@ export class Post {
   @Column({ nullable: true })
   @Field({ nullable: true })
   image: string;
-  //
+
   // @Field(() => User)
   // @ManyToOne(() => User, (user) => user.posts)
   // user: User;

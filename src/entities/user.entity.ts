@@ -57,7 +57,7 @@ export class User {
   @JoinColumn()
   @Field({ nullable: true })
   settings?: UserSetting;
-  //
+
   // @Field()
   // @ManyToMany(() => Post, (post) => post.user)
   // posts: Post[];

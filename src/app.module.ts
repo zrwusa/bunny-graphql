@@ -18,6 +18,12 @@ import { ProductsModule } from './product/product.module';
       driver: ApolloDriver,
       autoSchemaFile: 'generated/schema.gql',
       debug: true,
+      playground: true,
+      introspection: true,
+      formatError: (error) => {
+        console.error('GraphQL Error:', error);
+        return error;
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -32,6 +38,7 @@ import { ProductsModule } from './product/product.module';
           database: configService.get('POSTGRES_DATABASE'),
           entities: [User, UserSetting, Product],
           synchronize: true, // For development only, production environments should use migrations
+          logging: ['query', 'error'], //Turn on SQL query and error logging
         };
       },
       inject: [ConfigService],

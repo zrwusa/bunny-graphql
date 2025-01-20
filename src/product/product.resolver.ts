@@ -19,6 +19,7 @@ export class ProductResolver {
 
   @Mutation(() => Product)
   createProduct(@Args('createProductDto') createProductDto: CreateProductDto) {
+    console.log(`createProductInput ${JSON.stringify(createProductDto)}`);
     return this.productService.createProduct(createProductDto);
   }
 }
