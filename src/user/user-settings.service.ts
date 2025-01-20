@@ -18,15 +18,15 @@ export class UserSettingService {
     return this.userSettingsRepository.findOneBy({ userId });
   }
 
-  async createUserSettings(createUserSettingsData: CreateUserSettingsDto) {
+  async createUserSettings(createUserSettingsInput: CreateUserSettingsDto) {
     const findUser = await this.userRepository.findOneBy({
-      id: createUserSettingsData.userId,
+      id: createUserSettingsInput.userId,
     });
 
     if (!findUser) throw new Error('User Not Found');
 
     const newUserSetting = this.userSettingsRepository.create(
-      createUserSettingsData,
+      createUserSettingsInput,
     );
     const savedSettings =
       await this.userSettingsRepository.save(newUserSetting);

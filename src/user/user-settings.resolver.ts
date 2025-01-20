@@ -10,11 +10,10 @@ export class UserSettingsResolver {
   @Mutation(() => UserSetting)
   async createUserSettings(
     @Args('createUserSettingsDto')
-    createUserSettingsData: CreateUserSettingsDto,
+    createUserSettingsInput: CreateUserSettingsDto,
   ) {
-    const userSetting = await this.userSettingsService.createUserSettings(
-      createUserSettingsData,
+    return await this.userSettingsService.createUserSettings(
+      createUserSettingsInput,
     );
-    return userSetting;
   }
 }

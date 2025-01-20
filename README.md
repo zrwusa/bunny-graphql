@@ -1,4 +1,3 @@
-
 ## Description
 
 [//]: # ([Nest]&#40;https://github.com/nestjs/nest&#41; framework TypeScript starter repository.)
@@ -10,6 +9,7 @@ $ npm install
 ```
 
 ### .env
+
 ```text
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
@@ -17,6 +17,7 @@ POSTGRES_USERNAME=postgres
 POSTGRES_PASSWORD=YOUR_DATABASE_PASSWORD
 POSTGRES_DATABASE=YOUR_DATABASE_NAME
 ```
+
 ## Compile and run the project
 
 ```bash
@@ -43,8 +44,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-
 ### Get users
+
 ```graphql
 query {
     getUsers {
@@ -56,11 +57,16 @@ query {
             receiveEmails
             receiveNotifications
         }
+        posts {
+            id
+            content
+        }
     }
 }
 ```
 
 ### Create user
+
 ```graphql
 mutation {
     createUser(
@@ -80,17 +86,18 @@ mutation {
 }
 
 ```
+
 ### Get user by id
+
 ```graphql
 query {
-  getUserById(id: "905081365494623249") {
-    username
-    oauthId
-    email
-  }
+    getUserById(id: "905081365494623249") {
+        username
+        oauthId
+        email
+    }
 }
 ```
-
 
 ### Create user settings
 
@@ -106,23 +113,75 @@ mutation {
     }
 }
 ```
-## Deployment
 
+### Get products
+
+```graphql
+query {
+    getProducts {
+        name,
+        price,
+        description
+    }
+}
+```
+
+### Create post
+
+```graphql
+mutation {
+    createPost(
+        createPostDto: {
+            userId: "136964796021366197"
+            title: "title 9"
+            content: "content 9"
+            price: 20
+            image: "https://image.google.com/a.png"
+        }
+    ) {
+        id
+        image
+        title
+        content
+    }
+}
+```
+
+### Get posts
+
+```graphql
+
+query {
+    getPosts {
+        id
+        title
+        content
+        price
+        user {
+            id
+            username
+            provider
+        }
+    }
+}
+
+```
+
+## Deployment
 
 ```bash
 $ npm install -g mau
 $ mau deploy
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than
+managing infrastructure.
 
 ## Resources
 
 ## Support
 
-
 ## Stay in touch
-
 
 ## License
 

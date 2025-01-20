@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   getUsers() {
-    return this.usersRepository.find({ relations: ['settings'] });
+    return this.usersRepository.find({ relations: ['settings', 'posts'] });
   }
 
   getUserById(id: string) {
@@ -22,8 +22,8 @@ export class UserService {
     });
   }
 
-  createUser(createUserData: CreateUserDto) {
-    const newUser = this.usersRepository.create(createUserData);
+  createUser(createUserInput: CreateUserDto) {
+    const newUser = this.usersRepository.create(createUserInput);
     return this.usersRepository.save(newUser);
   }
 }

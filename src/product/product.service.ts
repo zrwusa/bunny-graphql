@@ -21,8 +21,8 @@ export class ProductService {
     });
   }
 
-  createProduct(createProductData: CreateProductDto) {
-    const newProduct = this.productsRepository.create(createProductData);
+  createProduct(createProductInput: CreateProductDto) {
+    const newProduct = this.productsRepository.create(createProductInput);
     return this.productsRepository.save(newProduct);
   }
 }

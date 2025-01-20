@@ -1,7 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { generateUuNumId } from '../utils';
 import { CreatedAtField, IdField, UpdatedAtField } from '../common';
+import { User } from './user.entity';
 
 @ObjectType()
 @Entity({ name: 'post' })
@@ -27,9 +34,9 @@ export class Post {
   @Field({ nullable: true })
   image: string;
 
-  // @Field(() => User)
-  // @ManyToOne(() => User, (user) => user.posts)
-  // user: User;
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.posts)
+  user: User;
 
   @CreatedAtField()
   createdAt!: Date;

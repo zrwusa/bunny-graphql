@@ -9,6 +9,15 @@ type UserSetting {
   receiveEmails: Boolean!
 }
 
+type Post {
+  id: String!
+  title: String!
+  content: String!
+  price: Float
+  image: String
+  user: User!
+}
+
 type User {
   id: String!
   username: String!
@@ -17,6 +26,7 @@ type User {
   oauthId: String
   provider: String
   settings: UserSetting
+  posts: [Post!]!
 }
 
 type Product {
@@ -32,12 +42,14 @@ type Query {
   getUsers: [User!]!
   getProductById(id: String!): Product
   getProducts: [Product!]!
+  getPosts: [Post!]!
 }
 
 type Mutation {
   createUser(createUserDto: CreateUserDto!): User!
   createUserSettings(createUserSettingsDto: CreateUserSettingsDto!): UserSetting!
   createProduct(createProductDto: CreateProductDto!): Product!
+  createPost(createPostDto: CreatePostDto!): Post!
 }
 
 input CreateUserDto {
@@ -57,4 +69,12 @@ input CreateProductDto {
   brand: String!
   price: Float!
   description: String
+}
+
+input CreatePostDto {
+  userId: String!
+  title: String!
+  content: String!
+  price: Float
+  image: String
 }

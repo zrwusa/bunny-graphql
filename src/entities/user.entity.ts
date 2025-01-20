@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
@@ -16,6 +17,7 @@ import {
   UpdatedAtField,
   UsernameField,
 } from '../common';
+import { Post } from './post.entity';
 
 @ObjectType()
 @Entity({ name: 'user' })
@@ -58,9 +60,9 @@ export class User {
   @Field({ nullable: true })
   settings?: UserSetting;
 
-  // @Field()
-  // @ManyToMany(() => Post, (post) => post.user)
-  // posts: Post[];
+  @Field(() => [Post])
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
   // Use the BeforeInsert decorator to ensure execution before inserting data
   @BeforeInsert()
