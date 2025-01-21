@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { Post } from '../entities/post.entity';
-import { CreatePostDto } from './dto/create-post.dto';
+import { User } from '../user/entities/user.entity';
+import { Post } from './entities/post.entity';
+import { CreatePostInput } from './dto/create-post.input';
 
 @Injectable()
 export class PostService {
@@ -14,7 +14,7 @@ export class PostService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createPost(createPostInput: CreatePostDto) {
+  async create(createPostInput: CreatePostInput) {
     const user = await this.userRepository.findOne({
       where: { id: createPostInput.userId },
     });
@@ -29,7 +29,7 @@ export class PostService {
     return await this.postRepository.save(newUserPost);
   }
 
-  async getPosts() {
+  async findAll() {
     return await this.postRepository.find({ relations: ['user'] });
   }
 }

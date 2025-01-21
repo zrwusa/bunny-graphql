@@ -21,7 +21,7 @@ export class OrderService {
     return this.orderRepository.find({
       skip: (page - 1) * pageSize,
       take: pageSize,
-      relations: ['items'],
+      relations: ['products'],
     });
   }
 

@@ -9,16 +9,16 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
-import { generateUuNumId } from '../utils';
+import { generateUuNumId } from '../../utils';
 import {
   CreatedAtField,
   EmailField,
   IdField,
   UpdatedAtField,
   UsernameField,
-} from '../common';
-import { Post } from './post.entity';
-import { Order } from '../order/entities/order.entity';
+} from '../../common';
+import { Post } from '../../post/entities/post.entity';
+import { Order } from '../../order/entities/order.entity';
 
 @ObjectType()
 @Entity({ name: 'user' })

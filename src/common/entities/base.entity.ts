@@ -1,7 +1,7 @@
 import { BeforeInsert, PrimaryColumn } from 'typeorm';
-import { CreatedAtField, IdField, UpdatedAtField } from './index';
+import { CreatedAtField, IdField, UpdatedAtField } from '../index';
 import { Field } from '@nestjs/graphql';
-import { generateUuNumId } from '../utils';
+import { generateUuNumId } from '../../utils';
 
 export abstract class BaseEntity {
   @PrimaryColumn({ type: 'bigint' })

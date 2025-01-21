@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserSetting } from '../entities/user-setting.entity';
-import { User } from '../entities/user.entity';
-import { CreateUserSettingsDto } from './dto/create-user-settings.dto';
+import { UserSetting } from './entities/user-setting.entity';
+import { User } from './entities/user.entity';
+import { CreateUserSettingsInput } from './dto/create-user-settings.input';
 
 @Injectable()
 export class UserSettingService {
@@ -14,11 +14,11 @@ export class UserSettingService {
     private userRepository: Repository<User>,
   ) {}
 
-  getUserSettingById(userId: string) {
+  findOne(userId: string) {
     return this.userSettingsRepository.findOneBy({ userId });
   }
 
-  async createUserSettings(createUserSettingsInput: CreateUserSettingsDto) {
+  async create(createUserSettingsInput: CreateUserSettingsInput) {
     const findUser = await this.userRepository.findOneBy({
       id: createUserSettingsInput.userId,
     });

@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Post } from '../entities/post.entity';
-import { CreatePostDto } from './dto/create-post.dto';
+import { Post } from './entities/post.entity';
+import { CreatePostInput } from './dto/create-post.input';
 import { PostService } from './post.service';
 
 @Resolver()
@@ -9,14 +9,14 @@ export class PostResolver {
 
   @Mutation(() => Post)
   async createPost(
-    @Args('createPostDto')
-    createPostInput: CreatePostDto,
+    @Args('createPostInput')
+    createPostInput: CreatePostInput,
   ) {
-    return await this.postService.createPost(createPostInput);
+    return await this.postService.create(createPostInput);
   }
 
-  @Query(() => [Post])
-  async getPosts() {
-    return await this.postService.getPosts();
+  @Query(() => [Post], { name: 'posts' })
+  async findAll() {
+    return await this.postService.findAll();
   }
 }

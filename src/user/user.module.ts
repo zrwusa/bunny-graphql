@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserResolver } from './user.resolver';
-import { User } from '../entities/user.entity';
-import { UserSetting } from '../entities/user-setting.entity';
+import { User } from './entities/user.entity';
+import { UserSetting } from './entities/user-setting.entity';
 import { UserSettingService } from './user-settings.service';
 import { UserService } from './user.service';
 import { UserSettingsResolver } from './user-settings.resolver';

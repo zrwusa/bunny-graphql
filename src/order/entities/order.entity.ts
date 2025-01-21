@@ -1,23 +1,19 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { OrderItems } from './order-items.entity';
-import { User } from '../../entities/user.entity';
-import { BaseEntity } from '../../common/base.entity';
-
-export enum OrderStatus {
-  Pending = 'Pending',
-  Paid = 'Paid',
-  AwaitingShipment = 'Awaiting Shipment',
-  Shipped = 'Shipped',
-  Completed = 'Completed',
-  Cancelled = 'Cancelled',
-  Refunding = 'Refunding',
-  Refunded = 'Refunded',
-  Returning = 'Returning',
-  Returned = 'Returned',
-}
+import { OrderProducts } from './order-products.entity';
+import { User } from '../../user/entities/user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
+import {
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  ShippingStatus,
+} from '../../common/enums';
 
 registerEnumType(OrderStatus, { name: 'OrderStatus' });
+registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
+registerEnumType(ShippingStatus, { name: 'ShippingStatus' });
+registerEnumType(PaymentMethod, { name: 'PaymentMethod' });
 
 @ObjectType()
 @Entity('order')
@@ -26,11 +22,11 @@ export class Order extends BaseEntity {
   @ManyToOne(() => User, (user) => user.orders, { eager: true })
   user: User;
 
-  @Field(() => [OrderItems], { nullable: true })
-  @OneToMany(() => OrderItems, (orderItem) => orderItem.order, {
+  @Field(() => [OrderProducts], { nullable: true })
+  @OneToMany(() => OrderProducts, (orderProducts) => orderProducts.order, {
     cascade: true,
   })
-  items: OrderItems[];
+  products: OrderProducts[];
 
   @Field(() => Float)
   @Column('decimal', { name: 'total_amount', precision: 10, scale: 2 })
@@ -43,4 +39,31 @@ export class Order extends BaseEntity {
   })
   @Field(() => OrderStatus)
   status: OrderStatus;
+
+  @Column({
+    name: 'payment_status',
+    type: 'enum',
+    enum: PaymentStatus,
+    default: PaymentStatus.Pending,
+  })
+  @Field(() => PaymentStatus)
+  paymentStatus: PaymentStatus;
+
+  @Column({
+    name: 'shipping_status',
+    type: 'enum',
+    enum: ShippingStatus,
+    default: ShippingStatus.Pending,
+  })
+  @Field(() => ShippingStatus)
+  shippingStatus: ShippingStatus;
+
+  @Column({
+    name: 'payment_method',
+    type: 'enum',
+    enum: PaymentMethod,
+    default: PaymentMethod.CreditCard,
+  })
+  @Field(() => PaymentMethod)
+  paymentMethod: PaymentMethod;
 }

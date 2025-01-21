@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { CreatedAtField, IdField, UpdatedAtField } from '../common';
-import { generateUuNumId } from '../utils';
+import { CreatedAtField, IdField, UpdatedAtField } from '../../common';
+import { generateUuNumId } from '../../utils';
 
 @Entity({ name: 'user_settings' })
 @ObjectType()

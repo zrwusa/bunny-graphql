@@ -4,15 +4,15 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './user/user.module';
-import { User } from './entities/user.entity';
-import { UserSetting } from './entities/user-setting.entity';
-import { Product } from './entities/product.entity';
+import { User } from './user/entities/user.entity';
+import { UserSetting } from './user/entities/user-setting.entity';
+import { Product } from './product/entities/product.entity';
 import { ProductsModule } from './product/product.module';
 import { PostModule } from './post/post.module';
-import { Post } from './entities/post.entity';
+import { Post } from './post/entities/post.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
-import { OrderItems } from './order/entities/order-items.entity';
+import { OrderProducts } from './order/entities/order-products.entity';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { OrderItems } from './order/entities/order-items.entity';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'generated/schema.gql',
+      autoSchemaFile: 'src/generated/schema.gql',
       debug: true,
       playground: true,
       introspection: true,
@@ -41,7 +41,7 @@ import { OrderItems } from './order/entities/order-items.entity';
           username: configService.get('POSTGRES_USERNAME'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
-          entities: [User, UserSetting, Product, Post, Order, OrderItems],
+          entities: [User, UserSetting, Product, Post, Order, OrderProducts],
           synchronize: true, // For development only, production environments should use migrations
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };

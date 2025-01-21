@@ -48,7 +48,7 @@ $ npm run test:cov
 
 ```graphql
 query {
-    getUsers {
+    users {
         id
         username
         provider
@@ -63,6 +63,7 @@ query {
         }
     }
 }
+
 ```
 
 ### Create user
@@ -70,20 +71,18 @@ query {
 ```graphql
 mutation {
     createUser(
-        createUserDto: {
-            username: "xxx"
-            password: "Xxx123"
+        createUserInput: {
+            username: "Maf"
             email: "xxx@gmail.com"
+            password: "Zdd@fafdas"
         }
     ) {
         username
+        email
         id
-        settings {
-            userId
-            receiveEmails
-        }
     }
 }
+
 
 ```
 
@@ -91,12 +90,13 @@ mutation {
 
 ```graphql
 query {
-    getUserById(id: "905081365494623249") {
-        username
-        oauthId
+    user(id: "905081365494623249") {
+        id
         email
+        username
     }
 }
+
 ```
 
 ### Create user settings
@@ -104,26 +104,31 @@ query {
 ```graphql
 mutation {
     createUserSettings(
-        createUserSettingsDto: { userId: "461131055522593811", receiveEmails: true }
+        createUserSettingsInput: {
+            userId: "905081365494623249"
+            receiveEmails: true
+            receiveNotifications: false
+        }
     ) {
         id
         userId
-        receiveEmails
-        receiveNotifications
     }
 }
+
 ```
 
 ### Get products
 
 ```graphql
 query {
-    getProducts {
-        name,
-        price,
+    products {
+        id
+        name
+        brand
         description
     }
 }
+
 ```
 
 ### Create post
@@ -131,10 +136,10 @@ query {
 ```graphql
 mutation {
     createPost(
-        createPostDto: {
+        createPostInput: {
             userId: "136964796021366197"
-            title: "title 9"
-            content: "content 9"
+            title: "title 645"
+            content: "content 544"
             price: 20
             image: "https://image.google.com/a.png"
         }
@@ -145,20 +150,17 @@ mutation {
         content
     }
 }
+
 ```
 
 ### Get posts
 
 ```graphql
-
 query {
-    getPosts {
+    posts {
         id
-        title
-        content
-        price
+        image
         user {
-            id
             username
             provider
         }

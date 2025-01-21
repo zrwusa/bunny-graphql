@@ -1,8 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { PaginationArgs } from '../../common/dto/pagination-args';
+import { PaginationInput } from '../../common/dto/pagination-input';
 
 @InputType()
-export class FilterOrderInput extends PaginationArgs {
+export class FilterOrderInput extends PaginationInput {
   @Field({ nullable: true })
   status?: string;
 
