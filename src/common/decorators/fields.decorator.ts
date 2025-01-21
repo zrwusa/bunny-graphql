@@ -1,6 +1,7 @@
 // src/common/decorators/fields.decorator.ts
 // import { ApiProperty } from '@nestjs/swagger';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Field } from '@nestjs/graphql';
 
 // import { IsEmail, IsString, Length, Matches } from 'class-validator';
 
@@ -65,7 +66,7 @@ export function CreatedAtField(entityName?: string) {
     // ApiProperty({
     //   description: `The date and time when the ${entityName} was created`,
     // })(target, propertyKey);
-
+    Field(() => Date)(target, propertyKey);
     CreateDateColumn({
       name: 'created_at',
       type: 'timestamp',
@@ -83,6 +84,7 @@ export function UpdatedAtField(entityName?: string) {
 
     // IsEmail()(target, propertyKey);
 
+    Field(() => Date)(target, propertyKey);
     UpdateDateColumn({
       name: 'updated_at',
       type: 'timestamp',

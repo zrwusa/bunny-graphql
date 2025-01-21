@@ -10,6 +10,9 @@ import { Product } from './entities/product.entity';
 import { ProductsModule } from './product/product.module';
 import { PostModule } from './post/post.module';
 import { Post } from './entities/post.entity';
+import { OrderModule } from './order/order.module';
+import { Order } from './order/entities/order.entity';
+import { OrderItems } from './order/entities/order-items.entity';
 
 @Module({
   imports: [
@@ -38,7 +41,7 @@ import { Post } from './entities/post.entity';
           username: configService.get('POSTGRES_USERNAME'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
-          entities: [User, UserSetting, Product, Post],
+          entities: [User, UserSetting, Product, Post, Order, OrderItems],
           synchronize: true, // For development only, production environments should use migrations
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };
@@ -48,6 +51,7 @@ import { Post } from './entities/post.entity';
     UsersModule,
     ProductsModule,
     PostModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

@@ -18,6 +18,7 @@ import {
   UsernameField,
 } from '../common';
 import { Post } from './post.entity';
+import { Order } from '../order/entities/order.entity';
 
 @ObjectType()
 @Entity({ name: 'user' })
@@ -63,6 +64,10 @@ export class User {
   @Field(() => [Post])
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @Field(() => [Order])
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   // Use the BeforeInsert decorator to ensure execution before inserting data
   @BeforeInsert()
