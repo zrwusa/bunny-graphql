@@ -1,8 +1,9 @@
 import { BeforeInsert, PrimaryColumn } from 'typeorm';
 import { CreatedAtField, IdField, UpdatedAtField } from '../index';
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { generateUuNumId } from '../../utils';
 
+@ObjectType()
 export abstract class BaseEntity {
   @PrimaryColumn({ type: 'bigint' })
   @IdField() // Generalize the id field

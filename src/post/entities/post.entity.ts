@@ -1,22 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm';
-import { generateUuNumId } from '../../utils';
-import { CreatedAtField, IdField, UpdatedAtField } from '../../common';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
-@ObjectType()
 @Entity({ name: 'post' })
-export class Post {
-  @PrimaryColumn({ type: 'bigint' })
-  @IdField() // Generalize the id field
-  @Field() // GraphQL requires this Field decorator to be used alone
-  id!: string;
+@ObjectType()
+export class Post extends BaseEntity {
+  @ManyToOne(() => User, (user) => user.posts)
+  @Field(() => User)
+  user: User;
 
   @Column()
   @Field()
@@ -33,20 +25,4 @@ export class Post {
   @Column({ nullable: true })
   @Field({ nullable: true })
   image: string;
-
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.posts)
-  user: User;
-
-  @CreatedAtField()
-  createdAt!: Date;
-
-  @UpdatedAtField()
-  updatedAt!: Date;
-
-  // Use the BeforeInsert decorator to ensure execution before inserting data
-  @BeforeInsert()
-  async setId() {
-    this.id = generateUuNumId();
-  }
 }

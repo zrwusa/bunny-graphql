@@ -44,6 +44,19 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## WebStorm Debugging
+```text
+Node interpreter: versions/node/v22.10.0/bin/node) 22.10.0
+TypeScript loader: None
+Node parameters: 
+Working directory: ~/projects/bunny-graphql
+File: node_modules/.bin/nest
+Application parameters: start --debug --watch
+Environment variables: Environment variables
+```
+
+## Graphql queries and mutations
+
 ### Get users
 
 ```graphql
@@ -165,6 +178,32 @@ query {
             provider
         }
     }
+}
+
+```
+
+### Get orders
+
+```graphql
+query {
+  orders(filterOrderInput: { page: 1, pageSize: 10 }) {
+    status
+    shippingStatus
+    paymentStatus
+    paymentMethod
+    user {
+      id
+      username
+    }
+    products {
+      price
+      quantity
+      product {
+        name
+        brand
+      }
+    }
+  }
 }
 
 ```

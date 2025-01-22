@@ -1,15 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import { generateUuNumId } from '../../utils';
-import { CreatedAtField, IdField, UpdatedAtField } from '../../common';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Inventory } from './inventory.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
-@ObjectType()
 @Entity({ name: 'product' })
-export class Product {
-  @PrimaryColumn({ type: 'bigint' })
-  @IdField() // Generalize the id field
-  @Field() // GraphQL requires this Field decorator to be used alone
-  id!: string;
+@ObjectType()
+export class Product extends BaseEntity {
+  @OneToOne(() => Inventory)
+  @JoinColumn()
+  @Field({ nullable: true })
+  inventory?: Inventory;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -26,16 +26,4 @@ export class Product {
   @Column({ nullable: true })
   @Field({ nullable: true })
   description: string;
-
-  @CreatedAtField()
-  createdAt!: Date;
-
-  @UpdatedAtField()
-  updatedAt!: Date;
-
-  // Use the BeforeInsert decorator to ensure execution before inserting data
-  @BeforeInsert()
-  async setId() {
-    this.id = generateUuNumId();
-  }
 }

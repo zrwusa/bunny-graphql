@@ -15,22 +15,18 @@ registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
 registerEnumType(ShippingStatus, { name: 'ShippingStatus' });
 registerEnumType(PaymentMethod, { name: 'PaymentMethod' });
 
-@ObjectType()
 @Entity('order')
+@ObjectType()
 export class Order extends BaseEntity {
-  @Field(() => User)
   @ManyToOne(() => User, (user) => user.orders, { eager: true })
+  @Field(() => User)
   user: User;
 
-  @Field(() => [OrderProducts], { nullable: true })
   @OneToMany(() => OrderProducts, (orderProducts) => orderProducts.order, {
     cascade: true,
   })
+  @Field(() => [OrderProducts], { nullable: true })
   products: OrderProducts[];
-
-  @Field(() => Float)
-  @Column('decimal', { name: 'total_amount', precision: 10, scale: 2 })
-  totalAmount: number;
 
   @Column({
     type: 'enum',
@@ -66,4 +62,8 @@ export class Order extends BaseEntity {
   })
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;
+
+  @Column('decimal', { name: 'total_amount', precision: 10, scale: 2 })
+  @Field(() => Float)
+  totalAmount: number;
 }

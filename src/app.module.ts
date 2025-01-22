@@ -7,12 +7,15 @@ import { UsersModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { UserSetting } from './user/entities/user-setting.entity';
 import { Product } from './product/entities/product.entity';
-import { ProductsModule } from './product/product.module';
+import { ProductModule } from './product/product.module';
 import { PostModule } from './post/post.module';
 import { Post } from './post/entities/post.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { OrderProducts } from './order/entities/order-products.entity';
+import { PaymentModule } from './payment/payment.module';
+import { Inventory } from './product/entities/inventory.entity';
+import { Payment } from './payment/entities/payment.entity';
 
 @Module({
   imports: [
@@ -41,7 +44,16 @@ import { OrderProducts } from './order/entities/order-products.entity';
           username: configService.get('POSTGRES_USERNAME'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
-          entities: [User, UserSetting, Product, Post, Order, OrderProducts],
+          entities: [
+            User,
+            UserSetting,
+            Product,
+            Post,
+            Order,
+            OrderProducts,
+            Inventory,
+            Payment,
+          ],
           synchronize: true, // For development only, production environments should use migrations
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };
@@ -49,9 +61,10 @@ import { OrderProducts } from './order/entities/order-products.entity';
       inject: [ConfigService],
     }),
     UsersModule,
-    ProductsModule,
+    ProductModule,
     PostModule,
     OrderModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],
