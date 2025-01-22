@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PaymentResolver } from '../src/payment/payment.resolver';
-import { PaymentService } from '../src/payment/payment.service';
+import { PaymentResolver } from './payment.resolver';
+import { PaymentService } from './payment.service';
 
 describe('PaymentResolver', () => {
   let resolver: PaymentResolver;

@@ -129,7 +129,12 @@ type Payment {
     paymentTime: DateTime
 }
 
+type App {
+    message: String!
+}
+
 type Query {
+    ping: App!
     user(id: String!): User
     users: [User!]!
     product(id: String!): Product

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InventoryResolver } from '../src/product/inventory.resolver';
-import { InventoryService } from '../src/product/inventory.service';
+import { InventoryResolver } from './inventory.resolver';
+import { InventoryService } from './inventory.service';
 
 describe('InventoryResolver', () => {
   let resolver: InventoryResolver;

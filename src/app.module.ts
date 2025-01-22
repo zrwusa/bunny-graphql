@@ -16,6 +16,7 @@ import { OrderProducts } from './order/entities/order-products.entity';
 import { PaymentModule } from './payment/payment.module';
 import { Inventory } from './product/entities/inventory.entity';
 import { Payment } from './payment/entities/payment.entity';
+import { AppResolver } from './app.resolver';
 
 @Module({
   imports: [
@@ -67,6 +68,6 @@ import { Payment } from './payment/entities/payment.entity';
     PaymentModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AppResolver],
 })
 export class AppModule {}
