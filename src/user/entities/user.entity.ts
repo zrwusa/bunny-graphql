@@ -6,7 +6,7 @@ import { Post } from '../../post/entities/post.entity';
 import { Order } from '../../order/entities/order.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 @ObjectType()
 export class User extends BaseEntity {
   @OneToOne(() => UserSetting)
@@ -33,7 +33,6 @@ export class User extends BaseEntity {
   email!: string;
 
   @Column({ nullable: true })
-  @Field({ nullable: true })
   password?: string;
 
   @Column({ name: 'oauth_id', unique: true, nullable: true })

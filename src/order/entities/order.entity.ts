@@ -1,6 +1,6 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { OrderProducts } from './order-products.entity';
+import { OrderProduct } from './order-product.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 import {
@@ -15,18 +15,21 @@ registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
 registerEnumType(ShippingStatus, { name: 'ShippingStatus' });
 registerEnumType(PaymentMethod, { name: 'PaymentMethod' });
 
-@Entity('order')
+@Entity('orders')
 @ObjectType()
 export class Order extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.orders, { eager: true })
+  @ManyToOne(() => User, (user) => user.orders, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @Field(() => User)
   user: User;
 
-  @OneToMany(() => OrderProducts, (orderProducts) => orderProducts.order, {
+  @OneToMany(() => OrderProduct, (orderProducts) => orderProducts.order, {
     cascade: true,
   })
-  @Field(() => [OrderProducts], { nullable: true })
-  products: OrderProducts[];
+  @Field(() => [OrderProduct], { nullable: true })
+  products: OrderProduct[];
 
   @Column({
     type: 'enum',

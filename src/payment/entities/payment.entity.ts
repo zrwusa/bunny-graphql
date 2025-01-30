@@ -7,8 +7,8 @@ import { BaseEntity } from '../../common/entities/base.entity';
 registerEnumType(PaymentMethod, { name: 'PaymentMethod' });
 registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
 
-@ObjectType()
 @Entity('payments')
+@ObjectType()
 export class Payment extends BaseEntity {
   @ManyToOne(() => Order, { eager: true })
   @JoinColumn({ name: 'order_id' })

@@ -1,10 +1,10 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InventoryService } from './inventory.service';
-import { Inventory } from './entities/inventory.entity';
+import { InventoryRecord } from './entities/inventory.entity';
 // import { CreateInventoryInput } from './dto/create-inventory.input';
 // import { UpdateInventoryInput } from './dto/update-inventory.input';
 
-@Resolver(() => Inventory)
+@Resolver(() => InventoryRecord)
 export class InventoryResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 
@@ -13,12 +13,12 @@ export class InventoryResolver {
   //   return this.inventoryService.create(createInventoryInput);
   // }
 
-  @Query(() => [Inventory], { name: 'inventory' })
+  @Query(() => [InventoryRecord], { name: 'inventoryRecords' })
   findAll() {
     return this.inventoryService.findAll();
   }
 
-  @Query(() => Inventory, { name: 'inventory' })
+  @Query(() => InventoryRecord, { name: 'inventoryRecord' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.inventoryService.findOne(id);
   }
@@ -28,7 +28,7 @@ export class InventoryResolver {
   //   return this.inventoryService.update(updateInventoryInput.id, updateInventoryInput);
   // }
 
-  @Mutation(() => Inventory)
+  @Mutation(() => InventoryRecord)
   removeInventory(@Args('id', { type: () => Int }) id: number) {
     return this.inventoryService.remove(id);
   }

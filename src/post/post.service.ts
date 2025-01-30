@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
@@ -19,7 +19,7 @@ export class PostService {
       where: { id: createPostInput.userId },
     });
 
-    if (!user) throw new Error('User Not Found');
+    if (!user) throw new NotFoundException('User not found');
 
     const newUserPost = this.postRepository.create({
       ...createPostInput,

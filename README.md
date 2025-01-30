@@ -45,6 +45,7 @@ $ npm run test:cov
 ```
 
 ## WebStorm Debugging
+
 ```text
 Node interpreter: versions/node/v22.10.0/bin/node) 22.10.0
 TypeScript loader: None
@@ -144,6 +145,27 @@ query {
 
 ```
 
+### Create product
+
+```graphql
+mutation {
+    createProduct(
+        createProductInput: {
+            name: "Jobmax"
+            brand: "Ridgid"
+            price: 560
+            description: "Ridgid Jobmax octane multi functional tool set"
+        }
+    ) {
+        id
+        name
+        brand
+        price
+    }
+}
+
+```
+
 ### Create post
 
 ```graphql
@@ -186,30 +208,30 @@ query {
 
 ```graphql
 query {
-  orders(filterOrderInput: { page: 1, pageSize: 10 }) {
-    status
-    shippingStatus
-    paymentStatus
-    paymentMethod
-    user {
-      id
-      username
+    orders(filterOrderInput: { page: 1, pageSize: 10 }) {
+        status
+        shippingStatus
+        paymentStatus
+        paymentMethod
+        user {
+            id
+            username
+        }
+        products {
+            price
+            quantity
+            product {
+                name
+                brand
+            }
+        }
     }
-    products {
-      price
-      quantity
-      product {
-        name
-        brand
-      }
-    }
-  }
 }
 
 ```
 
-
 ### Enum
+
 ```sql
 SELECT n.nspname AS schema_name,
        t.typname AS enum_name,

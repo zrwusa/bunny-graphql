@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
-@Entity({ name: 'post' })
+@Entity({ name: 'posts' })
 @ObjectType()
 export class Post extends BaseEntity {
   @ManyToOne(() => User, (user) => user.posts)

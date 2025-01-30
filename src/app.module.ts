@@ -12,9 +12,9 @@ import { PostModule } from './post/post.module';
 import { Post } from './post/entities/post.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
-import { OrderProducts } from './order/entities/order-products.entity';
+import { OrderProduct } from './order/entities/order-product.entity';
 import { PaymentModule } from './payment/payment.module';
-import { Inventory } from './product/entities/inventory.entity';
+import { InventoryRecord } from './product/entities/inventory.entity';
 import { Payment } from './payment/entities/payment.entity';
 import { AppResolver } from './app.resolver';
 
@@ -51,10 +51,11 @@ import { AppResolver } from './app.resolver';
             Product,
             Post,
             Order,
-            OrderProducts,
-            Inventory,
+            OrderProduct,
+            InventoryRecord,
             Payment,
           ],
+          migrations: ['src/migrations/*{.ts,.js}'],
           synchronize: true, // For development only, production environments should use migrations
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };

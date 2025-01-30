@@ -6,12 +6,12 @@ import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity('order_products')
 @ObjectType()
-export class OrderProducts extends BaseEntity {
+export class OrderProduct extends BaseEntity {
   @ManyToOne(() => Order, (order) => order.products, { onDelete: 'CASCADE' })
   @Field(() => Order)
   order: Order;
 
-  @ManyToOne(() => Product, { eager: true })
+  @ManyToOne(() => Product, { eager: true, onDelete: 'CASCADE' })
   @Field(() => Product)
   product: Product;
 
@@ -20,6 +20,8 @@ export class OrderProducts extends BaseEntity {
   quantity: number;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  @Field(() => Float)
+  @Field(() => Float, {
+    description: 'The total price of the current quantity of products',
+  })
   price: number;
 }

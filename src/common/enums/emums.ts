@@ -30,3 +30,10 @@ export enum PaymentMethod {
   BankTransfer = 'Bank Transfer',
   Other = 'Other',
 }
+
+export enum InventoryType {
+  PURCHASE = 'purchase', // Purchase
+  SALE = 'sale', // Order out
+  RETURN = 'return', // Order cancellation
+  ADJUSTMENT = 'adjustment', // Inventory adjustment
+}

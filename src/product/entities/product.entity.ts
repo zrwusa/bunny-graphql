@@ -1,15 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { Inventory } from './inventory.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { InventoryRecord } from './inventory.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
-@Entity({ name: 'product' })
+@Entity({ name: 'products' })
 @ObjectType()
 export class Product extends BaseEntity {
-  @OneToOne(() => Inventory)
-  @JoinColumn()
-  @Field({ nullable: true })
-  inventory?: Inventory;
+  @OneToMany(() => InventoryRecord, (inventory) => inventory.product)
+  inventoryRecords: InventoryRecord[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })
