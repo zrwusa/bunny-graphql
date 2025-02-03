@@ -37,3 +37,14 @@ export enum InventoryType {
   RETURN = 'return', // Order cancellation
   ADJUSTMENT = 'adjustment', // Inventory adjustment
 }
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  OTHER = 'other',
+}
+
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark',
+}

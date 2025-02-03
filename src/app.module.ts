@@ -12,11 +12,14 @@ import { PostModule } from './post/post.module';
 import { Post } from './post/entities/post.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
-import { OrderProduct } from './order/entities/order-product.entity';
+import { OrderItem } from './order/entities/order-item.entity';
 import { PaymentModule } from './payment/payment.module';
-import { InventoryRecord } from './product/entities/inventory.entity';
+import { InventoryRecord } from './product/entities/inventory-record.entity';
 import { Payment } from './payment/entities/payment.entity';
 import { AppResolver } from './app.resolver';
+import { UserProfile } from './user/entities/user-profile.entity';
+import { UserAddress } from './user/entities/user-address.entity';
+import { UserPaymentMethod } from './user/entities/user-payment-method.entity';
 
 @Module({
   imports: [
@@ -48,10 +51,13 @@ import { AppResolver } from './app.resolver';
           entities: [
             User,
             UserSetting,
+            UserProfile,
+            UserAddress,
+            UserPaymentMethod,
             Product,
             Post,
             Order,
-            OrderProduct,
+            OrderItem,
             InventoryRecord,
             Payment,
           ],

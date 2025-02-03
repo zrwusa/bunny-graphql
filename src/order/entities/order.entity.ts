@@ -1,6 +1,6 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { OrderProduct } from './order-product.entity';
+import { OrderItem } from './order-item.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 import {
@@ -25,11 +25,11 @@ export class Order extends BaseEntity {
   @Field(() => User)
   user: User;
 
-  @OneToMany(() => OrderProduct, (orderProducts) => orderProducts.order, {
+  @OneToMany(() => OrderItem, (orderItems) => orderItems.order, {
     cascade: true,
   })
-  @Field(() => [OrderProduct], { nullable: true })
-  products: OrderProduct[];
+  @Field(() => [OrderItem], { nullable: true })
+  items: OrderItem[];
 
   @Column({
     type: 'enum',
@@ -66,7 +66,7 @@ export class Order extends BaseEntity {
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;
 
-  @Column('decimal', { name: 'total_amount', precision: 10, scale: 2 })
+  @Column('decimal', { name: 'total_price', precision: 10, scale: 2 })
   @Field(() => Float)
-  totalAmount: number;
+  totalPrice: number;
 }

@@ -5,12 +5,12 @@ export class CreateOrderInput {
   @Field({ description: 'User Id' })
   userId: string;
 
-  @Field(() => [OrderProductInput])
-  products: OrderProductInput[];
+  @Field(() => [OrderItemInput])
+  items: OrderItemInput[];
 }
 
 @InputType()
-export class OrderProductInput {
+export class OrderItemInput {
   @Field(() => String, { description: 'Product Ids' })
   productId: string;
 

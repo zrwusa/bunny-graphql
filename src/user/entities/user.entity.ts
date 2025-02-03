@@ -5,6 +5,9 @@ import { EmailField, UsernameField } from '../../common';
 import { Post } from '../../post/entities/post.entity';
 import { Order } from '../../order/entities/order.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
+import { UserProfile } from './user-profile.entity';
+import { UserAddress } from './user-address.entity';
+import { UserPaymentMethod } from './user-payment-method.entity';
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -13,6 +16,17 @@ export class User extends BaseEntity {
   @JoinColumn()
   @Field({ nullable: true })
   settings?: UserSetting;
+
+  @OneToOne(() => UserProfile, (profile) => profile.user, { cascade: true })
+  profile: UserProfile;
+
+  @OneToMany(() => UserAddress, (address) => address.user, { cascade: true })
+  addresses: UserAddress[];
+
+  @OneToMany(() => UserPaymentMethod, (payment) => payment.user, {
+    cascade: true,
+  })
+  paymentMethods: UserPaymentMethod[];
 
   @OneToMany(() => Post, (post) => post.user)
   @Field(() => [Post])

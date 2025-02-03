@@ -3,8 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-// import { CreateOrderInput } from './dto/create-order.input';
-// import { UpdateOrderInput } from './dto/update-order.input';
 import { FilterOrderInput } from './dto/filter-order.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
@@ -12,11 +10,10 @@ import { DataSource, Repository } from 'typeorm';
 import { CreateOrderInput } from './dto/create-order.input';
 import { User } from '../user/entities/user.entity';
 import { Product } from '../product/entities/product.entity';
-import { OrderProduct } from './entities/order-product.entity';
-import { InventoryRecord } from '../product/entities/inventory.entity';
+import { OrderItem } from './entities/order-item.entity';
+import { InventoryRecord } from '../product/entities/inventory-record.entity';
 import { InventoryType, OrderStatus } from '../common/enums';
 // import { PaymentStatus } from '../common/enums';
-// import { Inventory } from '../product/entities/inventory.entity';
 // import { Payment } from '../payment/entities/payment.entity';
 
 @Injectable()
@@ -27,10 +24,9 @@ export class OrderService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-    @InjectRepository(OrderProduct)
-    private readonly orderProductsRepository: Repository<OrderProduct>,
+    @InjectRepository(OrderItem)
+    private readonly orderItemsRepository: Repository<OrderItem>,
     private readonly dataSource: DataSource,
-    // private readonly inventoryRepository: Repository<Inventory>,
     // private readonly paymentRepository: Repository<Payment>,
   ) {}
 
@@ -40,19 +36,17 @@ export class OrderService {
       const user = await manager.findOne(User, { where: { id: userId } });
       if (!user) throw new NotFoundException('User not found');
 
-      let totalAmount = 0;
-      const orderProducts: OrderProduct[] = [];
       const inventoryRecords: InventoryRecord[] = [];
       // Create an order
       const order = manager.create(Order, {
         user,
         status: OrderStatus.Pending,
-        totalAmount,
-        orderProducts,
+        totalPrice: 0,
+        items: [] as OrderItem[],
       });
-      for (const item of createOrderInput.products) {
-        const product = await manager.findOne(Product, {
-          where: { id: item.productId },
+      for (const item of createOrderInput.items) {
+        const product = await manager.findOneBy(Product, {
+          id: item.productId,
         });
 
         if (!product)
@@ -65,37 +59,37 @@ export class OrderService {
             productId: item.productId,
           })
           .select('SUM(inventory_records.quantity)', 'totalStock')
-          .getRawOne();
+          .getRawOne<{ totalStock: string }>();
 
-        if ((totalStock.totalStock || 0) < item.quantity) {
+        if ((Number(totalStock.totalStock) || 0) < item.quantity) {
           throw new BadRequestException(
             `Product ${product.name} is out of stock`,
           );
         }
 
         const subtotal = product.price * item.quantity;
-        totalAmount += subtotal;
+        order.totalPrice += subtotal;
 
         // Create an order product item
-        const orderProduct = manager.create(OrderProduct, {
+        const orderItem = manager.create(OrderItem, {
           product,
           quantity: item.quantity,
           price: product.price,
         });
-        orderProducts.push(orderProduct);
+        order.items.push(orderItem);
 
         // Create inventory exit record
-        const inventory = manager.create(InventoryRecord, {
+        const inventoryRecord = manager.create(InventoryRecord, {
           product,
           quantity: -item.quantity, // Negative number indicates the warehouse
           type: InventoryType.SALE,
           order,
         });
-        inventoryRecords.push(inventory);
+        inventoryRecords.push(inventoryRecord);
       }
 
       await manager.save(order);
-      for (const op of orderProducts) {
+      for (const op of order.items) {
         op.order = order;
         await manager.save(op);
       }

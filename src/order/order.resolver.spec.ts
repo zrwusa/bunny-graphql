@@ -55,12 +55,12 @@ describe('OrderResolver', () => {
             updatedAt: new Date(),
             setId: jest.fn(),
           } as User,
-          products: [],
+          items: [],
           status: OrderStatus.Pending,
           paymentStatus: PaymentStatus.Pending,
           shippingStatus: ShippingStatus.Pending,
           paymentMethod: PaymentMethod.CreditCard,
-          totalAmount: 200.0,
+          totalPrice: 200.0,
           setId: jest.fn(),
         },
       ];
@@ -95,7 +95,7 @@ describe('OrderResolver', () => {
         'paymentMethod',
         PaymentMethod.CreditCard,
       );
-      expect(firstOrder).toHaveProperty('totalAmount', 200.0);
+      expect(firstOrder).toHaveProperty('totalPrice', 200.0);
     });
   });
 });

@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { InventoryRecord } from './inventory.entity';
+import { InventoryRecord } from './inventory-record.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'products' })

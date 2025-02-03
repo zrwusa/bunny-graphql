@@ -4,10 +4,10 @@ import { Order } from './order.entity';
 import { Product } from '../../product/entities/product.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
-@Entity('order_products')
+@Entity('order_items')
 @ObjectType()
-export class OrderProduct extends BaseEntity {
-  @ManyToOne(() => Order, (order) => order.products, { onDelete: 'CASCADE' })
+export class OrderItem extends BaseEntity {
+  @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
   @Field(() => Order)
   order: Order;
 

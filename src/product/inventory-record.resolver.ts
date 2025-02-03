@@ -1,11 +1,11 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InventoryService } from './inventory.service';
-import { InventoryRecord } from './entities/inventory.entity';
+import { InventoryRecord } from './entities/inventory-record.entity';
 // import { CreateInventoryInput } from './dto/create-inventory.input';
 // import { UpdateInventoryInput } from './dto/update-inventory.input';
 
 @Resolver(() => InventoryRecord)
-export class InventoryResolver {
+export class InventoryRecordResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 
   // @Mutation(() => Inventory)

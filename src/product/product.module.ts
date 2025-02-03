@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductResolver } from './product.resolver';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
-import { InventoryRecord } from './entities/inventory.entity';
-import { InventoryResolver } from './inventory.resolver';
+import { InventoryRecord } from './entities/inventory-record.entity';
+import { InventoryRecordResolver } from './inventory-record.resolver';
 import { InventoryService } from './inventory.service';
 
 @Module({
@@ -13,7 +13,7 @@ import { InventoryService } from './inventory.service';
     ProductService,
     ProductResolver,
     InventoryService,
-    InventoryResolver,
+    InventoryRecordResolver,
   ],
 })
 export class ProductModule {}

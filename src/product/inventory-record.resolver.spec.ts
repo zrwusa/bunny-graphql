@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InventoryResolver } from './inventory.resolver';
+import { InventoryRecordResolver } from './inventory-record.resolver';
 import { InventoryService } from './inventory.service';
 
 describe('InventoryResolver', () => {
-  let resolver: InventoryResolver;
+  let resolver: InventoryRecordResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InventoryResolver, InventoryService],
+      providers: [InventoryRecordResolver, InventoryService],
     }).compile();
 
-    resolver = module.get<InventoryResolver>(InventoryResolver);
+    resolver = module.get<InventoryRecordResolver>(InventoryRecordResolver);
   });
 
   it('should be defined', () => {
