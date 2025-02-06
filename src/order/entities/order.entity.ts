@@ -9,6 +9,7 @@ import {
   PaymentStatus,
   ShippingStatus,
 } from '../../common/enums';
+import { Payment } from '../../payment/entities/payment.entity';
 
 registerEnumType(OrderStatus, { name: 'OrderStatus' });
 registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
@@ -30,6 +31,10 @@ export class Order extends BaseEntity {
   })
   @Field(() => [OrderItem], { nullable: true })
   items: OrderItem[];
+
+  @OneToMany(() => Payment, (payment) => payment.order, { cascade: true })
+  @Field(() => [Payment], { nullable: true })
+  payments: Payment[];
 
   @Column({
     type: 'enum',

@@ -12,10 +12,18 @@ export class PaymentResolver {
   createPayment(
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ) {
-    return this.paymentService.create(createPaymentInput);
+    return this.paymentService.create(createPaymentInput.orderId);
   }
 
-  @Query(() => [Payment], { name: 'payment' })
+  @Mutation(() => Payment)
+  async confirmPayment(
+    @Args('paymentId') paymentId: string,
+    @Args('status') status: string,
+  ) {
+    return this.paymentService.confirm(paymentId, status);
+  }
+
+  @Query(() => [Payment], { name: 'payments' })
   findAll() {
     return this.paymentService.findAll();
   }

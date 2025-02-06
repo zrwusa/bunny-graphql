@@ -31,6 +31,10 @@ export class Payment extends BaseEntity {
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  url: string;
+
   @Column('decimal', { precision: 10, scale: 2 })
   @Field(() => Float)
   amount: number;

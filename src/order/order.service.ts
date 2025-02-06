@@ -13,6 +13,7 @@ import { Product } from '../product/entities/product.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { InventoryRecord } from '../product/entities/inventory-record.entity';
 import { InventoryType, OrderStatus } from '../common/enums';
+import { PaymentService } from '../payment/payment.service';
 // import { PaymentStatus } from '../common/enums';
 // import { Payment } from '../payment/entities/payment.entity';
 
@@ -21,18 +22,13 @@ export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Product)
-    private readonly productRepository: Repository<Product>,
-    @InjectRepository(OrderItem)
-    private readonly orderItemsRepository: Repository<OrderItem>,
     private readonly dataSource: DataSource,
-    // private readonly paymentRepository: Repository<Payment>,
+    private readonly paymentService: PaymentService,
   ) {}
 
   async create(createOrderInput: CreateOrderInput) {
     const { userId } = createOrderInput;
-    return this.dataSource.transaction(async (manager) => {
+    const order = await this.dataSource.transaction(async (manager) => {
       const user = await manager.findOne(User, { where: { id: userId } });
       if (!user) throw new NotFoundException('User not found');
 
@@ -44,36 +40,36 @@ export class OrderService {
         totalPrice: 0,
         items: [] as OrderItem[],
       });
-      for (const item of createOrderInput.items) {
+      for (const { productId, quantity } of createOrderInput.items) {
         const product = await manager.findOneBy(Product, {
-          id: item.productId,
+          id: productId,
         });
 
         if (!product)
-          throw new NotFoundException(`Product ID ${item.productId} not found`);
+          throw new NotFoundException(`Product ID ${productId} not found`);
 
         // Calculate the current inventory
         const totalStock = await manager
           .createQueryBuilder(InventoryRecord, 'inventory_records')
           .where('inventory_records.productId = :productId', {
-            productId: item.productId,
+            productId,
           })
           .select('SUM(inventory_records.quantity)', 'totalStock')
           .getRawOne<{ totalStock: string }>();
 
-        if ((Number(totalStock.totalStock) || 0) < item.quantity) {
+        if ((Number(totalStock.totalStock) || 0) < quantity) {
           throw new BadRequestException(
             `Product ${product.name} is out of stock`,
           );
         }
 
-        const subtotal = product.price * item.quantity;
+        const subtotal = product.price * quantity;
         order.totalPrice += subtotal;
 
         // Create an order product item
         const orderItem = manager.create(OrderItem, {
           product,
-          quantity: item.quantity,
+          quantity,
           price: product.price,
         });
         order.items.push(orderItem);
@@ -81,7 +77,7 @@ export class OrderService {
         // Create inventory exit record
         const inventoryRecord = manager.create(InventoryRecord, {
           product,
-          quantity: -item.quantity, // Negative number indicates the warehouse
+          quantity: -quantity, // Negative number indicates the warehouse
           type: InventoryType.SALE,
           order,
         });
@@ -102,42 +98,18 @@ export class OrderService {
 
       return order;
     });
-  }
 
-  // async createOrderWithPaymentAndInventory(orderData, paymentData) {
-  //   const queryRunner =
-  //     this.orderRepository.manager.connection.createQueryRunner();
-  //
-  //   await queryRunner.startTransaction();
-  //   try {
-  //     const order = await queryRunner.manager.save(Order, orderData);
-  //
-  //     await queryRunner.manager.update(
-  //       Inventory,
-  //       { product_id: orderData.product_id },
-  //       { stock_quantity: orderData.quantity },
-  //     );
-  //
-  //     const payment = await queryRunner.manager.save(Payment, paymentData);
-  //
-  //     await queryRunner.manager.update(Order, order.id, {
-  //       paymentStatus: PaymentStatus.Paid,
-  //     });
-  //
-  //     await queryRunner.commitTransaction();
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
-  //     throw error;
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+    // Immediately generate payment orders after the order is created
+    const payment = await this.paymentService.create(order.id);
+    order.payments = [payment];
+    return order;
+  }
 
   findAll({ page, pageSize }: FilterOrderInput) {
     return this.orderRepository.find({
       skip: (page - 1) * pageSize,
       take: pageSize,
-      relations: ['products'],
+      relations: ['items'],
     });
   }
 

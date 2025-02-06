@@ -67,12 +67,39 @@ type OrderItem {
     price: Float!
 }
 
+type Payment {
+    id: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    order: Order!
+    status: PaymentStatus!
+    paymentMethod: PaymentMethod!
+    url: String
+    amount: Float!
+    paymentTime: DateTime
+}
+
+enum PaymentStatus {
+    Pending
+    Paid
+    Failed
+    Refunded
+}
+
+enum PaymentMethod {
+    CreditCard
+    PayPal
+    BankTransfer
+    Other
+}
+
 type Order {
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
     user: User!
     items: [OrderItem!]
+    payments: [Payment!]
     status: OrderStatus!
     paymentStatus: PaymentStatus!
     shippingStatus: ShippingStatus!
@@ -93,24 +120,10 @@ enum OrderStatus {
     Returned
 }
 
-enum PaymentStatus {
-    Pending
-    Paid
-    Failed
-    Refunded
-}
-
 enum ShippingStatus {
     Pending
     Shipped
     Delivered
-}
-
-enum PaymentMethod {
-    CreditCard
-    PayPal
-    BankTransfer
-    Other
 }
 
 type User {
@@ -124,17 +137,6 @@ type User {
     email: String!
     oauthId: String
     provider: String
-}
-
-type Payment {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    order: Order!
-    status: PaymentStatus!
-    paymentMethod: PaymentMethod!
-    amount: Float!
-    paymentTime: DateTime
 }
 
 type App {
@@ -151,6 +153,7 @@ type Query {
     inventoryRecord(id: Int!): InventoryRecord!
     posts: [Post!]!
     orders(filterOrderInput: FilterOrderInput!): [Order!]!
+    payments: [Payment!]!
     payment(id: Int!): Payment!
 }
 
@@ -170,6 +173,7 @@ type Mutation {
     createPost(createPostInput: CreatePostInput!): Post!
     createOrder(createOrderInput: CreateOrderInput!): Order!
     createPayment(createPaymentInput: CreatePaymentInput!): Payment!
+    confirmPayment(paymentId: String!, status: String!): Payment!
     updatePayment(updatePaymentInput: UpdatePaymentInput!): Payment!
     removePayment(id: Int!): Payment!
 }
@@ -216,12 +220,12 @@ input OrderItemInput {
 }
 
 input CreatePaymentInput {
-    """Example field (placeholder)"""
-    exampleField: Int!
+    """Order ID"""
+    orderId: String!
 }
 
 input UpdatePaymentInput {
-    """Example field (placeholder)"""
-    exampleField: Int
+    """Order ID"""
+    orderId: String
     id: Int!
 }
