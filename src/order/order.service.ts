@@ -14,8 +14,21 @@ import { OrderItem } from './entities/order-item.entity';
 import { InventoryRecord } from '../product/entities/inventory-record.entity';
 import { InventoryType, OrderStatus } from '../common/enums';
 import { PaymentService } from '../payment/payment.service';
-// import { PaymentStatus } from '../common/enums';
-// import { Payment } from '../payment/entities/payment.entity';
+
+// TODO 7. Order Fulfillment
+//  The seller or warehouse processes the order:
+//  For physical products: Items are packed and shipped.
+//  For digital products: Download links or access credentials are provided.
+// TODO 8. Shipping & Tracking (If Applicable)
+//  The user receives a tracking number and can monitor the delivery status.
+//  Notifications are sent for shipping updates.
+// TODO 9. Order Delivery
+//  The product is delivered to the user.
+//  The user may need to confirm receipt.
+// TODO 10. Post-Order Actions
+//  The user can leave reviews and ratings.
+//  They may request returns, refunds, or exchanges based on the policy.
+//  The app may send follow-up emails for feedback or upselling.
 
 @Injectable()
 export class OrderService {
@@ -102,14 +115,30 @@ export class OrderService {
     // Immediately generate payment orders after the order is created
     const payment = await this.paymentService.create(order.id);
     order.payments = [payment];
+
+    // TODO 6. Order Confirmation. The app sends an order confirmation via email or notification, including order details and estimated delivery time.
     return order;
   }
 
   findAll({ page, pageSize }: FilterOrderInput) {
+    // TODO 1. Browsing & Product Selection.
+    //  The user explores the product catalog, using filters and search functions.
+    //  They view product details, including price, description, images, and reviews.
+    // TODO 2. Adding to Cart
+    //  The user adds desired items to their shopping cart.
+    //  They can modify quantities, remove items, or apply discount codes.
+    // TODO 3. Checkout Process
+    //  The user proceeds to checkout and selects:
+    //  Shipping address (if applicable)
+    //  Billing details
+    //  Payment method (credit card, PayPal, digital wallets, etc.)
+    //  The system calculates the total cost, including taxes and shipping fees.
+    // TODO 4. Order Placement
+    //  The user confirms the order, and the system creates an order record in the database.
+    //  A payment transaction is initiated (if required).
     return this.orderRepository.find({
       skip: (page - 1) * pageSize,
       take: pageSize,
-      relations: ['items'],
     });
   }
 

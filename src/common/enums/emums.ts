@@ -48,3 +48,21 @@ export enum Theme {
   LIGHT = 'light',
   DARK = 'dark',
 }
+
+export enum ShipmentStatus {
+  Pending = 'PENDING',
+  Shipped = 'SHIPPED',
+  InTransit = 'IN_TRANSIT',
+  Delivered = 'DELIVERED',
+  Failed = 'FAILED',
+  Returned = 'RETURNED',
+}
+
+export enum Carrier {
+  DHL = 'DHL',
+  FedEx = 'FEDEX',
+  UPS = 'UPS',
+  USPS = 'USPS',
+  Aramex = 'ARAMEX',
+  LocalCourier = 'LOCAL_COURIER',
+}

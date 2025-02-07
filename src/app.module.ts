@@ -8,8 +8,6 @@ import { User } from './user/entities/user.entity';
 import { UserSetting } from './user/entities/user-setting.entity';
 import { Product } from './product/entities/product.entity';
 import { ProductModule } from './product/product.module';
-import { PostModule } from './post/post.module';
-import { Post } from './post/entities/post.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { OrderItem } from './order/entities/order-item.entity';
@@ -20,6 +18,8 @@ import { AppResolver } from './app.resolver';
 import { UserProfile } from './user/entities/user-profile.entity';
 import { UserAddress } from './user/entities/user-address.entity';
 import { UserPaymentMethod } from './user/entities/user-payment-method.entity';
+import { ShipmentModule } from './shipment/shipment.module';
+import { Shipment } from './shipment/entities/shipment.entity';
 
 @Module({
   imports: [
@@ -55,11 +55,11 @@ import { UserPaymentMethod } from './user/entities/user-payment-method.entity';
             UserAddress,
             UserPaymentMethod,
             Product,
-            Post,
             Order,
             OrderItem,
             InventoryRecord,
             Payment,
+            Shipment,
           ],
           migrations: ['src/migrations/*{.ts,.js}'],
           synchronize: true, // For development only, production environments should use migrations
@@ -70,9 +70,9 @@ import { UserPaymentMethod } from './user/entities/user-payment-method.entity';
     }),
     UsersModule,
     ProductModule,
-    PostModule,
     OrderModule,
     PaymentModule,
+    ShipmentModule,
   ],
   controllers: [],
   providers: [AppResolver],

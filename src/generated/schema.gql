@@ -3,12 +3,12 @@
 # ------------------------------------------------------
 
 type UserSetting {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    userId: String!
-    receiveNotifications: Boolean!
-    receiveEmails: Boolean!
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  receiveNotifications: Boolean!
+  receiveEmails: Boolean!
 }
 
 """
@@ -16,216 +16,240 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Post {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    user: User!
-    title: String!
-    content: String!
-    price: Float
-    image: String
-}
-
 type InventoryRecord {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    product: Product!
-    quantity: Int!
-    type: InventoryType!
-    reason: String
-    order: Order
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  product: Product!
+  quantity: Int!
+  type: InventoryType!
+  reason: String
+  order: Order
 }
 
 enum InventoryType {
-    PURCHASE
-    SALE
-    RETURN
-    ADJUSTMENT
+  PURCHASE
+  SALE
+  RETURN
+  ADJUSTMENT
 }
 
 type Product {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    brand: String
-    name: String!
-    price: Float
-    description: String
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  brand: String
+  name: String!
+  price: Float
+  description: String
 }
 
 type OrderItem {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    order: Order!
-    product: Product!
-    quantity: Int!
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  order: Order!
+  product: Product!
+  quantity: Int!
 
-    """The total price of the current quantity of products"""
-    price: Float!
+  """The total price of the current quantity of products"""
+  price: Float!
 }
 
 type Payment {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    order: Order!
-    status: PaymentStatus!
-    paymentMethod: PaymentMethod!
-    url: String
-    amount: Float!
-    paymentTime: DateTime
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  order: Order!
+  status: PaymentStatus!
+  paymentMethod: PaymentMethod!
+  url: String
+  amount: Float!
+  paymentTime: DateTime
 }
 
 enum PaymentStatus {
-    Pending
-    Paid
-    Failed
-    Refunded
+  Pending
+  Paid
+  Failed
+  Refunded
 }
 
 enum PaymentMethod {
-    CreditCard
-    PayPal
-    BankTransfer
-    Other
+  CreditCard
+  PayPal
+  BankTransfer
+  Other
 }
 
 type Order {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    user: User!
-    items: [OrderItem!]
-    payments: [Payment!]
-    status: OrderStatus!
-    paymentStatus: PaymentStatus!
-    shippingStatus: ShippingStatus!
-    paymentMethod: PaymentMethod!
-    totalPrice: Float!
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  items: [OrderItem!]
+  payments: [Payment!]
+  status: OrderStatus!
+  paymentStatus: PaymentStatus!
+  shippingStatus: ShippingStatus!
+  paymentMethod: PaymentMethod!
+  totalPrice: Float!
 }
 
 enum OrderStatus {
-    Pending
-    Paid
-    AwaitingShipment
-    Shipped
-    Completed
-    Cancelled
-    Refunding
-    Refunded
-    Returning
-    Returned
+  Pending
+  Paid
+  AwaitingShipment
+  Shipped
+  Completed
+  Cancelled
+  Refunding
+  Refunded
+  Returning
+  Returned
 }
 
 enum ShippingStatus {
-    Pending
-    Shipped
-    Delivered
+  Pending
+  Shipped
+  Delivered
 }
 
 type User {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    settings: UserSetting
-    posts: [Post!]!
-    orders: [Order!]!
-    username: String!
-    email: String!
-    oauthId: String
-    provider: String
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  settings: UserSetting
+  orders: [Order!]!
+  username: String!
+  email: String!
+  oauthId: String
+  provider: String
 }
 
 type App {
-    message: String!
+  message: String!
+}
+
+type Shipment {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  order: Order!
+  status: ShipmentStatus!
+  carrier: Carrier!
+  trackingNumber: String
+  estimatedDelivery: DateTime
+  shippedAt: DateTime
+}
+
+enum ShipmentStatus {
+  Pending
+  Shipped
+  InTransit
+  Delivered
+  Failed
+  Returned
+}
+
+enum Carrier {
+  DHL
+  FedEx
+  UPS
+  USPS
+  Aramex
+  LocalCourier
 }
 
 type Query {
-    ping: App!
-    user(id: String!): User
-    users: [User!]!
-    product(id: String!): Product
-    products: [Product!]!
-    inventoryRecords: [InventoryRecord!]!
-    inventoryRecord(id: Int!): InventoryRecord!
-    posts: [Post!]!
-    orders(filterOrderInput: FilterOrderInput!): [Order!]!
-    payments: [Payment!]!
-    payment(id: Int!): Payment!
+  ping: App!
+  user(id: String!): User
+  users: [User!]!
+  product(id: String!): Product
+  products: [Product!]!
+  inventoryRecords: [InventoryRecord!]!
+  inventoryRecord(id: Int!): InventoryRecord!
+  orders(filterOrderInput: FilterOrderInput!): [Order!]!
+  payments: [Payment!]!
+  payment(id: Int!): Payment!
+  shipments: [Shipment!]!
+  shipment(id: Int!): Shipment!
 }
 
 input FilterOrderInput {
-    page: Float! = 1
-    pageSize: Float! = 10
-    status: String
-    startDate: DateTime
-    endDate: DateTime
+  page: Float! = 1
+  pageSize: Float! = 10
+  status: String
+  startDate: DateTime
+  endDate: DateTime
 }
 
 type Mutation {
-    createUser(createUserInput: CreateUserInput!): User!
-    createUserSettings(createUserSettingsInput: CreateUserSettingsInput!): UserSetting!
-    createProduct(createProductInput: CreateProductInput!): Product!
-    removeInventory(id: Int!): InventoryRecord!
-    createPost(createPostInput: CreatePostInput!): Post!
-    createOrder(createOrderInput: CreateOrderInput!): Order!
-    createPayment(createPaymentInput: CreatePaymentInput!): Payment!
-    confirmPayment(paymentId: String!, status: String!): Payment!
-    updatePayment(updatePaymentInput: UpdatePaymentInput!): Payment!
-    removePayment(id: Int!): Payment!
+  createUser(createUserInput: CreateUserInput!): User!
+  createUserSettings(createUserSettingsInput: CreateUserSettingsInput!): UserSetting!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  removeInventory(id: Int!): InventoryRecord!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  createPayment(createPaymentInput: CreatePaymentInput!): Payment!
+  confirmPayment(paymentId: String!, status: String!): Payment!
+  updatePayment(updatePaymentInput: UpdatePaymentInput!): Payment!
+  removePayment(id: Int!): Payment!
+  createShipment(createShipmentInput: CreateShipmentInput!): Shipment!
+  updateShipment(updateShipmentInput: UpdateShipmentInput!): Shipment!
+  removeShipment(id: Int!): Shipment!
 }
 
 input CreateUserInput {
-    username: String!
-    email: String!
-    password: String!
+  username: String!
+  email: String!
+  password: String!
 }
 
 input CreateUserSettingsInput {
-    userId: String!
-    receiveNotifications: Boolean = false
-    receiveEmails: Boolean = false
+  userId: String!
+  receiveNotifications: Boolean = false
+  receiveEmails: Boolean = false
 }
 
 input CreateProductInput {
-    name: String!
-    brand: String!
-    price: Float!
-    description: String
-}
-
-input CreatePostInput {
-    userId: String!
-    title: String!
-    content: String!
-    price: Float
-    image: String
+  name: String!
+  brand: String!
+  price: Float!
+  description: String
 }
 
 input CreateOrderInput {
-    """User Id"""
-    userId: String!
-    items: [OrderItemInput!]!
+  """User Id"""
+  userId: String!
+  items: [OrderItemInput!]!
 }
 
 input OrderItemInput {
-    """Product Ids"""
-    productId: String!
+  """Product Ids"""
+  productId: String!
 
-    """Quantity of the product(s)"""
-    quantity: Int!
+  """Quantity of the product(s)"""
+  quantity: Int!
 }
 
 input CreatePaymentInput {
-    """Order ID"""
-    orderId: String!
+  """Order ID"""
+  orderId: String!
 }
 
 input UpdatePaymentInput {
-    """Order ID"""
-    orderId: String
-    id: Int!
+  """Order ID"""
+  orderId: String
+  id: Int!
+}
+
+input CreateShipmentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateShipmentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

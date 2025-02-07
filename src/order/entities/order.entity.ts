@@ -27,6 +27,7 @@ export class Order extends BaseEntity {
   user: User;
 
   @OneToMany(() => OrderItem, (orderItems) => orderItems.order, {
+    eager: true,
     cascade: true,
   })
   @Field(() => [OrderItem], { nullable: true })

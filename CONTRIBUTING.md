@@ -60,3 +60,10 @@
     <td>Commits related to version releases</td>
   </tr>
 </table>
+
+## Development Commands
+
+### Create resource of a module including module, controller/resolver, service
+```shell
+nest g resource [module name]
+```
