@@ -37,6 +37,6 @@ export class ProductVariant extends BaseEntity {
   inventories!: Inventory[]; // Associated inventory
 
   @Field(() => [ProductReview])
-  @OneToMany(() => ProductReview, (review) => review.variant, { eager: true })
-  reviews!: ProductReview[]; // Product Reviews
+  @OneToMany(() => ProductReview, (review) => review.variant, { lazy: true })
+  reviews!: Promise<ProductReview[]>; // Product Reviews
 }

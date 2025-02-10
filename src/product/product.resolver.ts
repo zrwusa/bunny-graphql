@@ -1,11 +1,23 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { ProductService } from './product.service';
+import { ProductReviewLoader } from './loaders/product-review.loader';
+import { ProductReview } from './entities/product-review.entity';
 
 @Resolver(() => Product)
 export class ProductResolver {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private readonly productReviewLoader: ProductReviewLoader,
+  ) {}
 
   @Query(() => Product, { name: 'product', nullable: true })
   findOne(@Args('id') id: string) {
@@ -22,5 +34,10 @@ export class ProductResolver {
     @Args('createProductInput') createProductInput: CreateProductInput,
   ) {
     return this.productService.create(createProductInput);
+  }
+
+  @ResolveField(() => [ProductReview])
+  async reviews(@Parent() product: Product) {
+    return this.productReviewLoader.loadProductReviews(product.id);
   }
 }
