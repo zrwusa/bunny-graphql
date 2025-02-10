@@ -1,27 +1,50 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, OneToMany } from 'typeorm';
-import { InventoryRecord } from './inventory-record.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
+import { Category } from './category.entity';
+import { Brand } from './brand.entity';
+import { ProductVariant } from './product-variant.entity';
+import { ProductImage } from './product-image.entity';
+import { ProductReview } from './product-review.entity';
 
 @Entity({ name: 'products' })
 @ObjectType()
 export class Product extends BaseEntity {
-  @OneToMany(() => InventoryRecord, (inventory) => inventory.product)
-  inventoryRecords: InventoryRecord[];
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  brand: string;
-
-  @Column()
   @Field()
-  name!: string;
+  @Column({ type: 'varchar', length: 255 })
+  name!: string; // Product Name
 
-  @Column({ type: 'float', nullable: true })
   @Field({ nullable: true })
-  price?: number;
+  @Column({ type: 'text', nullable: true })
+  description?: string; // Product Description
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  description: string;
+  @Field(() => Category, { nullable: true })
+  @ManyToOne(() => Category, (category) => category.products, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    eager: true,
+  })
+  category?: Category; // Product Category
+
+  @Field(() => Brand, { nullable: true })
+  @ManyToOne(() => Brand, (brand) => brand.products, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    eager: true,
+  })
+  brand?: Brand; // Product Brand
+
+  @Field(() => [ProductVariant])
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    eager: true,
+  })
+  variants!: ProductVariant[]; // Variations of the product (color, size, etc.)
+
+  @Field(() => [ProductImage])
+  @OneToMany(() => ProductImage, (image) => image.product, { eager: true })
+  images!: ProductImage[]; // Product pictures
+
+  @Field(() => [ProductReview])
+  @OneToMany(() => ProductReview, (review) => review.product, { lazy: true })
+  reviews!: Promise<ProductReview[]>; // Product Reviews
 }

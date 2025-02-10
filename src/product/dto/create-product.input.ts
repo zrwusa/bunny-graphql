@@ -6,7 +6,7 @@ export class CreateProductInput {
   name!: string;
 
   @Field()
-  brand!: string;
+  brandId!: string;
 
   @Field()
   price!: number;

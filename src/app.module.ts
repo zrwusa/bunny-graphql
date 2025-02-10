@@ -20,6 +20,14 @@ import { UserAddress } from './user/entities/user-address.entity';
 import { UserPaymentMethod } from './user/entities/user-payment-method.entity';
 import { ShipmentModule } from './shipment/shipment.module';
 import { Shipment } from './shipment/entities/shipment.entity';
+import { Category } from './product/entities/category.entity';
+import { Inventory } from './product/entities/inventory.entity';
+import { ProductImage } from './product/entities/product-image.entity';
+import { ProductPrice } from './product/entities/product-price.entity';
+import { ProductReview } from './product/entities/product-review.entity';
+import { ProductVariant } from './product/entities/product-variant.entity';
+import { Warehouse } from './product/entities/warehouse.entity';
+import { Brand } from './product/entities/brand.entity';
 
 @Module({
   imports: [
@@ -55,6 +63,14 @@ import { Shipment } from './shipment/entities/shipment.entity';
             UserAddress,
             UserPaymentMethod,
             Product,
+            Brand,
+            Category,
+            Inventory,
+            ProductImage,
+            ProductPrice,
+            ProductReview,
+            ProductVariant,
+            Warehouse,
             Order,
             OrderItem,
             InventoryRecord,

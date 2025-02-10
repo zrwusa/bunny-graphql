@@ -9,11 +9,11 @@ import { Order } from './entities/order.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateOrderInput } from './dto/create-order.input';
 import { User } from '../user/entities/user.entity';
-import { Product } from '../product/entities/product.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { InventoryRecord } from '../product/entities/inventory-record.entity';
 import { InventoryType, OrderStatus } from '../common/enums';
 import { PaymentService } from '../payment/payment.service';
+import { ProductVariant } from '../product/entities/product-variant.entity';
 
 // TODO 7. Order Fulfillment
 //  The seller or warehouse processes the order:
@@ -53,44 +53,46 @@ export class OrderService {
         totalPrice: 0,
         items: [] as OrderItem[],
       });
-      for (const { productId, quantity } of createOrderInput.items) {
-        const product = await manager.findOneBy(Product, {
-          id: productId,
+      for (const { variantId, quantity } of createOrderInput.items) {
+        const variant = await manager.findOneBy(ProductVariant, {
+          id: variantId,
         });
 
-        if (!product)
-          throw new NotFoundException(`Product ID ${productId} not found`);
+        if (!variant)
+          throw new NotFoundException(
+            `Product variant ID ${variantId} not found`,
+          );
 
         // Calculate the current inventory
         const totalStock = await manager
           .createQueryBuilder(InventoryRecord, 'inventory_records')
-          .where('inventory_records.productId = :productId', {
-            productId,
+          .where('inventory_records.variantId = :variantId', {
+            variantId,
           })
-          .select('SUM(inventory_records.quantity)', 'totalStock')
+          .select('SUM(inventory_records.change_quantity)', 'totalStock')
           .getRawOne<{ totalStock: string }>();
 
         if ((Number(totalStock.totalStock) || 0) < quantity) {
           throw new BadRequestException(
-            `Product ${product.name} is out of stock`,
+            `Product variant ${variant.product.name} is out of stock`,
           );
         }
-
-        const subtotal = product.price * quantity;
+        const price = variant.prices[0].price;
+        const subtotal = price * quantity;
         order.totalPrice += subtotal;
 
         // Create an order product item
         const orderItem = manager.create(OrderItem, {
-          product,
+          variant,
           quantity,
-          price: product.price,
+          price,
         });
         order.items.push(orderItem);
 
         // Create inventory exit record
         const inventoryRecord = manager.create(InventoryRecord, {
-          product,
-          quantity: -quantity, // Negative number indicates the warehouse
+          variant,
+          changeQuantity: -quantity, // Negative number indicates the warehouse
           type: InventoryType.SALE,
           order,
         });

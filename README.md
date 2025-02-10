@@ -71,10 +71,6 @@ query {
             receiveEmails
             receiveNotifications
         }
-        posts {
-            id
-            content
-        }
     }
 }
 
@@ -138,8 +134,32 @@ query {
     products {
         id
         name
-        brand
         description
+        brand {
+            id
+            name
+        }
+        category {
+            id
+            name
+        }
+        variants {
+            id
+            sku
+            size
+            color
+            reviews {
+                rating
+                comment
+            }
+        }
+        images {
+            url
+        }
+        reviews {
+            rating
+            comment
+        }
     }
 }
 
@@ -151,64 +171,26 @@ query {
 mutation {
     createProduct(
         createProductInput: {
-            name: "Jobmax"
-            brand: "Ridgid"
-            price: 560
-            description: "Ridgid Jobmax octane multi functional tool set"
+            name: "Megamax"
+            brandId: "25696653144189"
+            price: 100
+            description: "Ridgid Megamax Rotary Hammer Head"
         }
     ) {
         id
         name
-        brand
-        price
     }
 }
-
 ```
 
-### Create post
 
-```graphql
-mutation {
-    createPost(
-        createPostInput: {
-            userId: "136964796021366197"
-            title: "title 645"
-            content: "content 544"
-            price: 20
-            image: "https://image.google.com/a.png"
-        }
-    ) {
-        id
-        image
-        title
-        content
-    }
-}
-
-```
-
-### Get posts
-
-```graphql
-query {
-    posts {
-        id
-        image
-        user {
-            username
-            provider
-        }
-    }
-}
-
-```
 
 ### Get orders
 
 ```graphql
 query {
     orders(filterOrderInput: { page: 1, pageSize: 10 }) {
+        id
         status
         shippingStatus
         paymentStatus
@@ -217,12 +199,11 @@ query {
             id
             username
         }
-        products {
+        items {
             price
             quantity
-            product {
-                name
-                brand
+            variant {
+                id
             }
         }
     }

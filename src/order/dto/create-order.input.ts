@@ -11,8 +11,8 @@ export class CreateOrderInput {
 
 @InputType()
 export class OrderItemInput {
-  @Field(() => String, { description: 'Product Ids' })
-  productId: string;
+  @Field(() => String, { description: 'Variant Ids' })
+  variantId: string;
 
   @Field(() => Int, { description: 'Quantity of the product(s)' })
   quantity: number;

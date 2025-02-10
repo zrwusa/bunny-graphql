@@ -66,3 +66,9 @@ export enum Carrier {
   Aramex = 'ARAMEX',
   LocalCourier = 'LOCAL_COURIER',
 }
+
+export enum CategoryType {
+  PHYSICAL = 'PHYSICAL',
+  DIGITAL = 'DIGITAL',
+  SERVICE = 'SERVICE',
+}

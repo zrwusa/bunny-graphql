@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
@@ -22,6 +22,8 @@ export class ProductService {
   }
 
   create(createProductInput: CreateProductInput) {
+    const { brandId } = createProductInput;
+    if (!brandId) throw new BadRequestException('Brand ID is required');
     const newProduct = this.productsRepository.create(createProductInput);
     return this.productsRepository.save(newProduct);
   }

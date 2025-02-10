@@ -7,6 +7,7 @@ import { BaseEntity } from '../../common/entities/base.entity';
 import { UserProfile } from './user-profile.entity';
 import { UserAddress } from './user-address.entity';
 import { UserPaymentMethod } from './user-payment-method.entity';
+import { ProductReview } from '../../product/entities/product-review.entity';
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -30,6 +31,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Order, (order) => order.user)
   @Field(() => [Order])
   orders: Order[];
+
+  @OneToMany(() => ProductReview, (review) => review.user)
+  reviews: ProductReview[];
 
   @Column()
   @UsernameField()

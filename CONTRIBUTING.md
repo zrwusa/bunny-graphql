@@ -67,3 +67,54 @@
 ```shell
 nest g resource [module name]
 ```
+
+
+
+## Contributing Guidelines
+
+Thank you for considering contributing to this project! To ensure a smooth development process, please follow these guidelines.
+
+### Important Notes on TypeORM Relations
+
+When working with TypeORM relations, it's important to be aware of the performance implications of different loading strategies:
+
+1. **Eager Loading (`eager: true`)**:
+    - **Behavior**: Automatically loads the related entities using a `LEFT JOIN` whenever the main entity is queried.
+    - **Performance Impact**: This can result in complex and heavy queries, potentially fetching unnecessary data even if it's not requested by the client (e.g., in GraphQL queries).
+    - **Recommendation**: Use eager loading sparingly, only when you're certain the related data will always be needed.
+
+2. **Lazy Loading (`lazy: true`)**:
+    - **Behavior**: Defers loading of related entities until the property is explicitly accessed in the code.
+    - **Performance Impact**: This can lead to multiple separate queries being executed, potentially causing the **N+1 query problem**.
+    - **Recommendation**: When using lazy loading, consider batching queries or using `leftJoinAndSelect` in custom queries to optimize performance.
+
+### Best Practices for Managing Relations
+
+- **Avoid N+1 Query Problems**:
+    - Use `leftJoinAndSelect` in your queries when you know related data is needed.
+    - Consider using batching tools like `DataLoader` in GraphQL to optimize related entity loading.
+
+- **GraphQL Query Optimization**:
+    - Use `@Info()` in resolvers to dynamically load related data only when requested by the client.
+    - Example:
+      ```typescript
+      @Query(() => [Product])
+      async products(@Info() info: GraphQLResolveInfo) {
+        const fields = graphqlFields(info);
+        const query = this.productRepository.createQueryBuilder('product');
+  
+        if (fields.category) {
+          query.leftJoinAndSelect('product.category', 'category');
+        }
+  
+        return query.getMany();
+      }
+      ```
+
+By following these guidelines, we can ensure efficient database interactions and maintain high performance in our application.
+
+---
+
+For any questions or further clarification, feel free to open an issue or reach out to the maintainers. Happy coding!
+
+
