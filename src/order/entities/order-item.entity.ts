@@ -1,5 +1,5 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Order } from './order.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { ProductVariant } from '../../product/entities/product-variant.entity';
@@ -9,10 +9,12 @@ import { ProductVariant } from '../../product/entities/product-variant.entity';
 export class OrderItem extends BaseEntity {
   @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
   @Field(() => Order)
+  @JoinColumn({ name: 'order_id' })
   order: Order;
 
   @Field(() => ProductVariant)
   @ManyToOne(() => ProductVariant, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'variant_id' })
   variant: ProductVariant;
 
   @Column()

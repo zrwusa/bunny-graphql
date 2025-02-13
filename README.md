@@ -66,14 +66,32 @@ query {
         id
         username
         provider
-        settings {
-            userId
+        preference {
             receiveEmails
             receiveNotifications
         }
+        profile {
+            bio
+            gender
+        }
+        addresses {
+            addressLine1
+            postalCode
+            addressLine2
+            city
+            country
+        }
+        paymentMethods {
+            paymentType
+        }
+        orders {
+            id
+        }
+        reviews {
+            id
+        }
     }
 }
-
 ```
 
 ### Create user

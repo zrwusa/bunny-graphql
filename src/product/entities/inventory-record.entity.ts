@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { InventoryType } from '../../common/enums';
 import { Order } from '../../order/entities/order.entity';
@@ -14,6 +14,7 @@ registerEnumType(InventoryType, {
 export class InventoryRecord extends BaseEntity {
   @Field(() => ProductVariant)
   @ManyToOne(() => ProductVariant, (variant) => variant.inventories)
+  @JoinColumn({ name: 'variant_id' })
   variant: ProductVariant;
 
   @Field(() => Int)
@@ -30,5 +31,6 @@ export class InventoryRecord extends BaseEntity {
 
   @Field(() => Order, { nullable: true })
   @ManyToOne(() => Order, { nullable: true }) // Related orders only when leaving the warehouse
+  @JoinColumn({ name: 'order_id' })
   order?: Order;
 }

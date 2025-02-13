@@ -1,16 +1,14 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 import { PaymentMethod } from '../../common/enums';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 registerEnumType(PaymentMethod, { name: 'PaymentMethod' });
 
 @ObjectType()
 @Entity({ name: 'user_payment_methods' })
-export class UserPaymentMethod {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserPaymentMethod extends BaseEntity {
   @ManyToOne(() => User, (user) => user.paymentMethods, { onDelete: 'CASCADE' })
   user: User;
 
@@ -23,7 +21,7 @@ export class UserPaymentMethod {
   maskedCardNumber: string; // Only store the card number after the mask
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ name: 'card_expiry', nullable: true })
   cardExpiry: Date;
 
   @Field({ nullable: true })

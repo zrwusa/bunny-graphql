@@ -12,13 +12,12 @@ export class UserService {
   ) {}
 
   findAll() {
-    return this.usersRepository.find({ relations: ['settings', 'posts'] });
+    return this.usersRepository.find();
   }
 
   findOne(id: string) {
     return this.usersRepository.findOne({
       where: { id },
-      relations: ['settings'],
     });
   }
 

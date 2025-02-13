@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Category } from './category.entity';
 import { Brand } from './brand.entity';
@@ -24,6 +24,7 @@ export class Product extends BaseEntity {
     onDelete: 'SET NULL',
     eager: true,
   })
+  @JoinColumn({ name: 'category_id' })
   category?: Category; // Product Category
 
   @Field(() => Brand, { nullable: true })
@@ -32,6 +33,7 @@ export class Product extends BaseEntity {
     onDelete: 'SET NULL',
     eager: true,
   })
+  @JoinColumn({ name: 'brand_id' })
   brand?: Brand; // Product Brand
 
   @Field(() => [ProductVariant])

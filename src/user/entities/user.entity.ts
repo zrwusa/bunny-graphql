@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { UserSetting } from './user-setting.entity';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { UserPreference } from './user-preference.entity';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 import { EmailField, UsernameField } from '../../common';
 import { Order } from '../../order/entities/order.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
@@ -12,29 +12,6 @@ import { ProductReview } from '../../product/entities/product-review.entity';
 @Entity({ name: 'users' })
 @ObjectType()
 export class User extends BaseEntity {
-  @OneToOne(() => UserSetting)
-  @JoinColumn()
-  @Field({ nullable: true })
-  settings?: UserSetting;
-
-  @OneToOne(() => UserProfile, (profile) => profile.user, { cascade: true })
-  profile: UserProfile;
-
-  @OneToMany(() => UserAddress, (address) => address.user, { cascade: true })
-  addresses: UserAddress[];
-
-  @OneToMany(() => UserPaymentMethod, (payment) => payment.user, {
-    cascade: true,
-  })
-  paymentMethods: UserPaymentMethod[];
-
-  @OneToMany(() => Order, (order) => order.user)
-  @Field(() => [Order])
-  orders: Order[];
-
-  @OneToMany(() => ProductReview, (review) => review.user)
-  reviews: ProductReview[];
-
   @Column()
   @UsernameField()
   @Field()
@@ -50,9 +27,41 @@ export class User extends BaseEntity {
 
   @Column({ name: 'oauth_id', unique: true, nullable: true })
   @Field({ nullable: true })
-  oauthId: string;
+  oauthId?: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  provider: string;
+  provider?: string;
+
+  @Field(() => UserPreference, { nullable: true })
+  @OneToOne(() => UserPreference, (preference) => preference.user, {
+    cascade: true,
+    eager: true,
+  })
+  preference?: UserPreference;
+
+  @OneToOne(() => UserProfile, (profile) => profile.user, {
+    cascade: true,
+    eager: true,
+  })
+  @Field(() => UserProfile, { nullable: true })
+  profile?: UserProfile;
+
+  @OneToMany(() => UserAddress, (address) => address.user, { cascade: true })
+  @Field(() => [UserAddress], { nullable: true })
+  addresses?: UserAddress[];
+
+  @OneToMany(() => UserPaymentMethod, (payment) => payment.user, {
+    cascade: true,
+  })
+  @Field(() => [UserPaymentMethod], { nullable: true })
+  paymentMethods?: UserPaymentMethod[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  @Field(() => [Order], { nullable: true })
+  orders?: Order[];
+
+  @OneToMany(() => ProductReview, (review) => review.user)
+  @Field(() => [ProductReview], { nullable: true })
+  reviews?: ProductReview[];
 }

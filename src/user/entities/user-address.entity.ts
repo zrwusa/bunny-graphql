@@ -1,18 +1,17 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @ObjectType()
 @Entity({ name: 'user_addresses' })
-export class UserAddress {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserAddress extends BaseEntity {
   @ManyToOne(() => User, (user) => user.addresses, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Field()
-  @Column()
+  @Column({ name: 'recipient_name' })
   recipientName: string;
 
   @Field()
@@ -20,11 +19,11 @@ export class UserAddress {
   phone: string;
 
   @Field()
-  @Column()
+  @Column({ name: 'address_line_1' })
   addressLine1: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ name: 'address_line_2', nullable: true })
   addressLine2: string;
 
   @Field()
@@ -32,7 +31,7 @@ export class UserAddress {
   city: string;
 
   @Field()
-  @Column()
+  @Column({ name: 'postal_code' })
   postalCode: string;
 
   @Field()
@@ -40,6 +39,6 @@ export class UserAddress {
   country: string;
 
   @Field()
-  @Column({ default: false })
+  @Column({ name: 'is_default', default: false })
   isDefault: boolean;
 }

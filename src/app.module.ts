@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
-import { UserSetting } from './user/entities/user-setting.entity';
+import { UserPreference } from './user/entities/user-preference.entity';
 import { Product } from './product/entities/product.entity';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
@@ -28,6 +28,7 @@ import { ProductReview } from './product/entities/product-review.entity';
 import { ProductVariant } from './product/entities/product-variant.entity';
 import { Warehouse } from './product/entities/warehouse.entity';
 import { Brand } from './product/entities/brand.entity';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -58,7 +59,7 @@ import { Brand } from './product/entities/brand.entity';
           database: configService.get('POSTGRES_DATABASE'),
           entities: [
             User,
-            UserSetting,
+            UserPreference,
             UserProfile,
             UserAddress,
             UserPaymentMethod,
@@ -79,6 +80,7 @@ import { Brand } from './product/entities/brand.entity';
           ],
           migrations: ['src/migrations/*{.ts,.js}'],
           synchronize: true, // For development only, production environments should use migrations
+          namingStrategy: new SnakeNamingStrategy(),
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };
       },
