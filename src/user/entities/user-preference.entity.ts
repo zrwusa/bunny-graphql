@@ -7,14 +7,14 @@ import { User } from './user.entity';
 @ObjectType()
 export class UserPreference extends BaseEntity {
   @OneToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   user: User;
 
-  @Column({ name: 'receive_notifications', default: false })
+  @Column({ default: false })
   @Field({ defaultValue: false })
   receiveNotifications: boolean;
 
-  @Column({ name: 'receive_emails', default: false })
+  @Column({ default: false })
   @Field({ defaultValue: false })
   receiveEmails: boolean;
 }

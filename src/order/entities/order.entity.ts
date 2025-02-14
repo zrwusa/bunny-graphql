@@ -1,5 +1,5 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { OrderItem } from './order-item.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
@@ -23,7 +23,6 @@ export class Order extends BaseEntity {
     eager: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'user_id' })
   @Field(() => User)
   user: User;
 
@@ -73,7 +72,7 @@ export class Order extends BaseEntity {
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;
 
-  @Column('decimal', { name: 'total_price', precision: 10, scale: 2 })
+  @Column('decimal', { precision: 10, scale: 2 })
   @Field(() => Float)
   totalPrice: number;
 }

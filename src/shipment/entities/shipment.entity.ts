@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Order } from '../../order/entities/order.entity';
 import { Carrier, ShipmentStatus } from '../../common/enums';
 import { BaseEntity } from '../../common/entities/base.entity';
@@ -11,7 +11,6 @@ registerEnumType(Carrier, { name: 'Carrier' });
 @ObjectType()
 export class Shipment extends BaseEntity {
   @ManyToOne(() => Order, { eager: true })
-  @JoinColumn({ name: 'order_id' })
   @Field(() => Order)
   order: Order;
 
@@ -30,15 +29,15 @@ export class Shipment extends BaseEntity {
   @Field(() => Carrier)
   carrier: Carrier;
 
-  @Column({ name: 'tracking_number', unique: true, nullable: true })
+  @Column({ unique: true, nullable: true })
   @Field({ nullable: true })
   trackingNumber: string;
 
-  @Column({ name: 'estimated_delivery', type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   estimatedDelivery: Date;
 
-  @Column({ name: 'shipped_at', type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   shippedAt: Date;
 }

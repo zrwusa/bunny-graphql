@@ -1,5 +1,5 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Order } from '../../order/entities/order.entity';
 import { PaymentMethod, PaymentStatus } from '../../common/enums';
 import { BaseEntity } from '../../common/entities/base.entity';
@@ -11,7 +11,6 @@ registerEnumType(PaymentStatus, { name: 'PaymentStatus' });
 @ObjectType()
 export class Payment extends BaseEntity {
   @ManyToOne(() => Order, { eager: true })
-  @JoinColumn({ name: 'order_id' })
   @Field(() => Order)
   order: Order;
 
@@ -39,7 +38,7 @@ export class Payment extends BaseEntity {
   @Field(() => Float)
   amount: number;
 
-  @Column({ name: 'payment_time', type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   paymentTime: Date;
 }

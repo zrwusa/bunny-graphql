@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, ManyToOne, Unique } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { ProductVariant } from './product-variant.entity';
@@ -16,13 +16,12 @@ export class Inventory extends BaseEntity {
   @ManyToOne(() => ProductVariant, (variant) => variant.inventories, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'variant_id' })
   variant!: ProductVariant; // Related product variants
 
   @Field(() => Warehouse)
   @ManyToOne(() => Warehouse, (warehouse) => warehouse.inventories, {
+    eager: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'warehouse_id' })
   warehouse!: Warehouse; // Related warehouse
 }

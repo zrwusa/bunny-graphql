@@ -10,11 +10,11 @@ registerEnumType(Gender, { name: 'Gender' });
 @Entity({ name: 'user_profiles' })
 export class UserProfile extends BaseEntity {
   @OneToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   user: User;
 
   @Field({ nullable: true })
-  @Column({ name: 'avatar_url', nullable: true })
+  @Column({ nullable: true })
   avatarUrl?: string;
 
   @Field({ nullable: true })
@@ -22,7 +22,7 @@ export class UserProfile extends BaseEntity {
   bio?: string;
 
   @Field({ nullable: true })
-  @Column({ name: 'birth_date', type: 'date', nullable: true })
+  @Column({ type: 'date', nullable: true })
   birthDate?: Date;
 
   @Field({ nullable: true })

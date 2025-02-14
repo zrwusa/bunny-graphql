@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Product } from './product.entity';
@@ -9,8 +9,7 @@ import { ProductVariant } from './product-variant.entity';
 @Entity('product_reviews')
 export class ProductReview extends BaseEntity {
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.reviews, {})
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.reviews, { eager: true })
   user!: User; // Rating user
 
   @Field(() => Int)
@@ -25,13 +24,11 @@ export class ProductReview extends BaseEntity {
   @ManyToOne(() => Product, (product) => product.reviews, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'product_id' })
   product!: Product; // Related Product
 
   @Field(() => ProductVariant)
   @ManyToOne(() => ProductVariant, (variant) => variant.reviews, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'variant_id' })
   variant!: ProductVariant; // Related Variant
 }

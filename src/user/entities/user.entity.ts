@@ -25,7 +25,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   password?: string;
 
-  @Column({ name: 'oauth_id', unique: true, nullable: true })
+  @Column({ unique: true, nullable: true })
   @Field({ nullable: true })
   oauthId?: string;
 

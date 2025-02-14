@@ -21,7 +21,7 @@ export class UserPaymentMethod extends BaseEntity {
   maskedCardNumber: string; // Only store the card number after the mask
 
   @Field({ nullable: true })
-  @Column({ name: 'card_expiry', nullable: true })
+  @Column({ nullable: true })
   cardExpiry: Date;
 
   @Field({ nullable: true })
