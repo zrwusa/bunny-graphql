@@ -11,6 +11,7 @@ import { CreateProductInput } from './dto/create-product.input';
 import { ProductService } from './product.service';
 import { ProductReviewLoader } from './loaders/product-review.loader';
 import { ProductReview } from './entities/product-review.entity';
+import { ListNewProductInput } from './dto/list-new-product.input';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -34,6 +35,13 @@ export class ProductResolver {
     @Args('createProductInput') createProductInput: CreateProductInput,
   ) {
     return this.productService.create(createProductInput);
+  }
+
+  @Mutation(() => Product)
+  listNewProduct(
+    @Args('listNewProductInput') listNewProductInput: ListNewProductInput,
+  ) {
+    return this.productService.listNewProduct(listNewProductInput);
   }
 
   @ResolveField(() => [ProductReview])

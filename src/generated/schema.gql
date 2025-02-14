@@ -309,6 +309,7 @@ type Mutation {
     createUser(createUserInput: CreateUserInput!): User!
     createUserSettings(createUserPreferenceInput: CreateUserPreferenceInput!): UserPreference!
     createProduct(createProductInput: CreateProductInput!): Product!
+    listNewProduct(listNewProductInput: ListNewProductInput!): Product!
     removeInventory(id: Int!): InventoryRecord!
     createOrder(createOrderInput: CreateOrderInput!): Order!
     createPayment(createPaymentInput: CreatePaymentInput!): Payment!
@@ -337,6 +338,41 @@ input CreateProductInput {
     brandId: String!
     price: Float!
     description: String
+}
+
+input ListNewProductInput {
+    name: String!
+    description: String!
+    brand: BrandInput!
+    category: CategoryInput!
+    images: [ImageInput!]!
+    variants: [VariantInput!]!
+}
+
+input BrandInput {
+    name: String!
+}
+
+input CategoryInput {
+    name: String!
+}
+
+input ImageInput {
+    url: String!
+    position: Float!
+}
+
+input VariantInput {
+    size: String!
+    sku: String!
+    color: String!
+    prices: [PriceInput!]
+}
+
+input PriceInput {
+    price: Float!
+    validFrom: DateTime!
+    validTo: DateTime!
 }
 
 input CreateOrderInput {

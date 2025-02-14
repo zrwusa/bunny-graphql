@@ -23,6 +23,7 @@ export class Product extends BaseEntity {
     nullable: true,
     onDelete: 'SET NULL',
     eager: true,
+    cascade: true,
   })
   category?: Category; // Product Category
 
@@ -31,20 +32,27 @@ export class Product extends BaseEntity {
     nullable: true,
     onDelete: 'SET NULL',
     eager: true,
+    cascade: true,
   })
   brand?: Brand; // Product Brand
 
   @Field(() => [ProductVariant])
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     eager: true,
+    cascade: true,
   })
   variants!: ProductVariant[]; // Variations of the product (color, size, etc.)
 
   @Field(() => [ProductImage])
-  @OneToMany(() => ProductImage, (image) => image.product, { eager: true })
+  @OneToMany(() => ProductImage, (image) => image.product, {
+    eager: true,
+    cascade: true,
+  })
   images!: ProductImage[]; // Product pictures
 
   @Field(() => [ProductReview])
-  @OneToMany(() => ProductReview, (review) => review.product, { lazy: true })
+  @OneToMany(() => ProductReview, (review) => review.product, {
+    lazy: true,
+  })
   reviews!: Promise<ProductReview[]>; // Product Reviews
 }

@@ -23,7 +23,10 @@ export class ProductVariant extends BaseEntity {
   size!: string; // size
 
   @Field(() => [ProductPrice])
-  @OneToMany(() => ProductPrice, (productPrice) => productPrice.variant, {})
+  @OneToMany(() => ProductPrice, (productPrice) => productPrice.variant, {
+    eager: true,
+    cascade: true,
+  })
   prices!: ProductPrice[]; // prices
 
   @Field(() => Product)
@@ -33,7 +36,9 @@ export class ProductVariant extends BaseEntity {
   product!: Product; // Related Product
 
   @Field(() => [Inventory])
-  @OneToMany(() => Inventory, (inventory) => inventory.variant, { eager: true })
+  @OneToMany(() => Inventory, (inventory) => inventory.variant, {
+    eager: true,
+  })
   inventories!: Inventory[]; // Associated inventory
 
   @Field(() => [ProductReview])
