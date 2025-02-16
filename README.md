@@ -153,6 +153,11 @@ query {
         id
         name
         description
+        images {
+            id
+            url
+            position
+        }
         brand {
             id
             name
@@ -163,24 +168,43 @@ query {
         }
         variants {
             id
-            sku
             size
+            sku
             color
+            prices {
+                id
+                price
+                validFrom
+                validTo
+            }
+            inventories {
+                id
+                quantity
+                warehouse {
+                    id
+                    name
+                    location
+                }
+            }
+            inventoryRecords {
+                id
+                changeQuantity
+                type
+                reason
+            }
             reviews {
+                id
                 rating
                 comment
             }
         }
-        images {
-            url
-        }
         reviews {
+            id
             rating
             comment
         }
     }
 }
-
 ```
 
 ### Create product
@@ -205,80 +229,116 @@ mutation {
 
 ```graphql
 mutation {
-  listNewProduct(
-    listNewProductInput: {
-      name: "Megamax"
-      description: "Ridgid Megamax Rotary Hammer Head"
-      brand: { name: "Ridgid" }
-      category: { name: "Multi Functional Tools" }
-      images: [
-        {
-          url: "https://images.homedepot.ca/productimages/p_1001102029.jpg?product-images=l"
-          position: 4
+    listNewProduct(
+        listNewProductInput: {
+            name: "Megamax"
+            description: "Ridgid Megamax Rotary Hammer Head"
+            brand: { name: "Ridgid" }
+            category: { name: "Multi Functional Tools" }
+            images: [
+                {
+                    url: "https://images.homedepot.ca/productimages/p_1001102029.jpg?product-images=l"
+                    position: 4
+                }
+                {
+                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
+                    position: 1
+                }
+                {
+                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
+                    position: 3
+                }
+                {
+                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=l"
+                    position: 2
+                }
+            ]
+            variants: [
+                {
+                    size: "30*36*60"
+                    sku: "Rigid-Megamax-8600403B"
+                    color: "Orange"
+                    prices: [
+                        {
+                            price: 198
+                            validFrom: "2025-02-01T08:36:06.000Z"
+                            validTo: "2025-02-14T08:36:10.000Z"
+                        }
+                        {
+                            price: 198
+                            validFrom: "2025-02-15T08:36:06.000Z"
+                            validTo: "2025-03-01T08:36:10.000Z"
+                        }
+                    ]
+                    inventories: [{ quantity: 100, warehouse: { id: "1" } }]
+                    inventoryRecords: [{ changeQuantity: 100, type: "PURCHASE" }]
+                }
+                {
+                    size: "30*32*66"
+                    sku: "Rigid-Megamax-8600406B"
+                    color: "Orange"
+                    prices: [
+                        {
+                            price: 536.29
+                            validFrom: "2025-02-01T08:36:06.000Z"
+                            validTo: "2025-02-14T08:36:10.000Z"
+                        }
+                        {
+                            price: 550.08
+                            validFrom: "2025-02-15T08:36:06.000Z"
+                            validTo: "2025-03-01T08:36:10.000Z"
+                        }
+                    ]
+                    inventories: [{ quantity: 20, warehouse: { id: "1" } }]
+                    inventoryRecords: [{ changeQuantity: 20, type: "PURCHASE" }]
+                }
+            ]
         }
-        {
-          url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
-          position: 1
+    ) {
+        id
+        name
+        description
+        images {
+            id
+            url
+            position
         }
-        {
-          url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
-          position: 3
+        brand {
+            id
+            name
         }
-        {
-          url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=l"
-          position: 2
+        category {
+            id
+            name
         }
-      ]
-      variants: [
-        {
-          size: "30*36*60"
-          sku: "Rigid-Megamax-8600403B"
-          color: "Orange"
-          prices: [
-            {
-              price: 198
-              validFrom: "2025-02-01T08:36:06.000Z"
-              validTo: "2025-02-14T08:36:10.000Z"
+        variants {
+            id
+            size
+            sku
+            color
+            prices {
+                id
+                price
+                validFrom
+                validTo
             }
-            {
-              price: 198
-              validFrom: "2025-02-15T08:36:06.000Z"
-              validTo: "2025-03-01T08:36:10.000Z"
+            inventories {
+                id
+                quantity
+                warehouse {
+                    id
+                    name
+                    location
+                }
             }
-          ]
+            inventoryRecords {
+                id
+                changeQuantity
+                type
+                reason
+            }
         }
-        {
-          size: "30*32*66"
-          sku: "Rigid-Megamax-8600406B"
-          color: "Orange"
-          prices: []
-        }
-      ]
     }
-  ) {
-    name
-    description
-    images {
-      url
-      position
-    }
-    brand {
-      name
-    }
-    category {
-      name
-    }
-    variants {
-      size
-      sku
-      color
-      prices {
-        price
-        validFrom
-        validTo
-      }
-    }
-  }
 }
 
 ```

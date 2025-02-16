@@ -24,7 +24,7 @@ export class PaymentService {
       where: { id: orderId },
     });
     if (!order) throw new NotFoundException('Order not found');
-    if (order.status !== OrderStatus.Pending) {
+    if (order.status !== OrderStatus.PENDING) {
       throw new BadRequestException('Order is not in a payable state');
     }
 
@@ -32,8 +32,8 @@ export class PaymentService {
     const payment = this.paymentRepository.create({
       order,
       amount: order.totalPrice,
-      status: PaymentStatus.Pending,
-      paymentMethod: PaymentMethod.CreditCard,
+      status: PaymentStatus.PENDING,
+      paymentMethod: PaymentMethod.CREDIT_CARD,
     });
     // Generate payment link
     payment.url = await this.generatePaymentUrl(payment);
@@ -51,16 +51,16 @@ export class PaymentService {
     if (!payment) throw new NotFoundException('Payment not found');
 
     if (status === 'success') {
-      payment.status = PaymentStatus.Paid;
+      payment.status = PaymentStatus.PAID;
       payment.paymentTime = new Date();
       await this.paymentRepository.save(payment);
 
       // Update order status
       const order = payment.order;
-      order.status = OrderStatus.Paid;
+      order.status = OrderStatus.PAID;
       await this.orderRepository.save(order);
     } else {
-      payment.status = PaymentStatus.Failed;
+      payment.status = PaymentStatus.FAILED;
       await this.paymentRepository.save(payment);
     }
 
@@ -89,17 +89,17 @@ export class PaymentService {
       relations: ['order'],
     });
     if (!payment) throw new NotFoundException('Payment not found');
-    if (payment.status !== PaymentStatus.Paid) {
+    if (payment.status !== PaymentStatus.PAID) {
       throw new BadRequestException('Only successful payments can be refunded');
     }
 
     // Simulation refund (actually the payment gateway should be called)
-    payment.status = PaymentStatus.Refunded;
+    payment.status = PaymentStatus.REFUNDED;
     await this.paymentRepository.save(payment);
 
     // Update order status
     const order = payment.order;
-    order.status = OrderStatus.Refunded;
+    order.status = OrderStatus.REFUNDED;
     await this.orderRepository.save(order);
 
     return payment;

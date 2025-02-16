@@ -40,7 +40,7 @@ export class Order extends BaseEntity {
   @Column({
     type: 'enum',
     enum: OrderStatus,
-    default: OrderStatus.Pending,
+    default: OrderStatus.PENDING,
   })
   @Field(() => OrderStatus)
   status: OrderStatus;
@@ -49,7 +49,7 @@ export class Order extends BaseEntity {
     name: 'payment_status',
     type: 'enum',
     enum: PaymentStatus,
-    default: PaymentStatus.Pending,
+    default: PaymentStatus.PENDING,
   })
   @Field(() => PaymentStatus)
   paymentStatus: PaymentStatus;
@@ -58,7 +58,7 @@ export class Order extends BaseEntity {
     name: 'shipping_status',
     type: 'enum',
     enum: ShippingStatus,
-    default: ShippingStatus.Pending,
+    default: ShippingStatus.PENDING,
   })
   @Field(() => ShippingStatus)
   shippingStatus: ShippingStatus;
@@ -67,7 +67,7 @@ export class Order extends BaseEntity {
     name: 'payment_method',
     type: 'enum',
     enum: PaymentMethod,
-    default: PaymentMethod.CreditCard,
+    default: PaymentMethod.CREDIT_CARD,
   })
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;

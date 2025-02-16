@@ -49,7 +49,7 @@ export class OrderService {
       // Create an order
       const order = manager.create(Order, {
         user,
-        status: OrderStatus.Pending,
+        status: OrderStatus.PENDING,
         totalPrice: 0,
         items: [] as OrderItem[],
       });

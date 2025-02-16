@@ -52,7 +52,7 @@ export class ProductVariant extends BaseEntity {
       cascade: true,
     },
   )
-  inventoryRecords!: InventoryRecord[]; // Associated inventory
+  inventoryRecords!: InventoryRecord[];
 
   @Field(() => [ProductReview])
   @OneToMany(() => ProductReview, (review) => review.variant, {

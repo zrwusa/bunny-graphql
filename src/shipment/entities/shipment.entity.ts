@@ -17,7 +17,7 @@ export class Shipment extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ShipmentStatus,
-    default: ShipmentStatus.Pending,
+    default: ShipmentStatus.PENDING,
   })
   @Field(() => ShipmentStatus)
   status: ShipmentStatus;

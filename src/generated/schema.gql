@@ -153,17 +153,17 @@ type Payment {
 }
 
 enum PaymentStatus {
-    Pending
-    Paid
-    Failed
-    Refunded
+    PENDING
+    PAID
+    FAILED
+    REFUNDED
 }
 
 enum PaymentMethod {
-    CreditCard
-    PayPal
-    BankTransfer
-    Other
+    CREDIT_CARD
+    PAYPAL
+    BANK_TRANSFER
+    OTHER
 }
 
 type Order {
@@ -181,22 +181,22 @@ type Order {
 }
 
 enum OrderStatus {
-    Pending
-    Paid
-    AwaitingShipment
-    Shipped
-    Completed
-    Cancelled
-    Refunding
-    Refunded
-    Returning
-    Returned
+    PENDING
+    PAID
+    AWAITING_SHIPMENT
+    SHIPPED
+    COMPLETED
+    CANCELLED
+    REFUNDING
+    REFUNDED
+    RETURNING
+    RETURNED
 }
 
 enum ShippingStatus {
-    Pending
-    Shipped
-    Delivered
+    PENDING
+    SHIPPED
+    DELIVERED
 }
 
 type UserProfile {
@@ -266,21 +266,21 @@ type Shipment {
 }
 
 enum ShipmentStatus {
-    Pending
-    Shipped
-    InTransit
-    Delivered
-    Failed
-    Returned
+    PENDING
+    SHIPPED
+    IN_TRANSIT
+    DELIVERED
+    FAILED
+    RETURNED
 }
 
 enum Carrier {
     DHL
-    FedEx
+    FEDEX
     UPS
     USPS
-    Aramex
-    LocalCourier
+    ARAMEX
+    LOCAL_COURIER
 }
 
 type Query {
@@ -351,11 +351,13 @@ input ListNewProductInput {
 }
 
 input BrandInput {
-    name: String!
+    id: String
+    name: String
 }
 
 input CategoryInput {
-    name: String!
+    id: String
+    name: String
 }
 
 input ImageInput {
@@ -380,6 +382,13 @@ input PriceInput {
 
 input InventoryInput {
     quantity: Float!
+    warehouse: WarehouseInput!
+}
+
+input WarehouseInput {
+    id: String
+    name: String
+    location: String
 }
 
 input InventoryRecordInput {

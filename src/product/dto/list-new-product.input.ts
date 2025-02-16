@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -34,6 +35,27 @@ class PriceInput {
   @Field()
   @IsDate()
   validTo: Date;
+}
+
+@InputType()
+class WarehouseInput {
+  @Field({ nullable: true }) // Allow GraphQL to pass null
+  @IsString()
+  @IsOptional() // Allowed to be empty
+  @ValidateIf((o) => !o.name && !o.location) // If name and location are empty, id is required
+  id?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.id) // If id is empty, name is required
+  name?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.id) // If id is empty, location is required
+  location?: string;
 }
 
 @InputType()
@@ -74,16 +96,32 @@ class VariantInput {
 
 @InputType()
 class BrandInput {
-  @Field()
+  @Field({ nullable: true }) // Allow GraphQL to pass null
   @IsString()
-  name: string;
+  @IsOptional() // Allowed to be empty
+  @ValidateIf((o) => !o.name) // If name is empty, id is required
+  id?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.id) // If id is empty, name is required
+  name?: string;
 }
 
 @InputType()
 class CategoryInput {
-  @Field()
+  @Field({ nullable: true }) // Allow GraphQL to pass null
   @IsString()
-  name: string;
+  @IsOptional() // Allowed to be empty
+  @ValidateIf((o) => !o.name) // If name is empty, id is required
+  id?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  @ValidateIf((o) => !o.id) // If id is empty, name is required
+  name?: string;
 }
 
 @InputType()
@@ -91,6 +129,10 @@ class InventoryInput {
   @Field()
   @IsNumber({ maxDecimalPlaces: 0 })
   quantity: number;
+
+  @Field(() => WarehouseInput)
+  @Type(() => WarehouseInput)
+  warehouse: WarehouseInput;
 }
 
 @InputType()

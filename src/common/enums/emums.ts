@@ -1,70 +1,70 @@
 export enum OrderStatus {
-  Pending = 'Pending',
-  Paid = 'Paid',
-  AwaitingShipment = 'Awaiting Shipment',
-  Shipped = 'Shipped',
-  Completed = 'Completed',
-  Cancelled = 'Cancelled',
-  Refunding = 'Refunding',
-  Refunded = 'Refunded',
-  Returning = 'Returning',
-  Returned = 'Returned',
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  AWAITING_SHIPMENT = 'AWAITING_SHIPMENT',
+  SHIPPED = 'SHIPPED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+  REFUNDING = 'REFUNDING',
+  REFUNDED = 'REFUNDED',
+  RETURNING = 'RETURNING',
+  RETURNED = 'RETURNED',
 }
 
 export enum PaymentStatus {
-  Pending = 'Pending',
-  Paid = 'Paid',
-  Failed = 'Failed',
-  Refunded = 'Refunded',
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
 }
 
 export enum ShippingStatus {
-  Pending = 'Pending',
-  Shipped = 'Shipped',
-  Delivered = 'Delivered',
+  PENDING = 'PENDING',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
 }
 
 export enum PaymentMethod {
-  CreditCard = 'Credit Card',
-  PayPal = 'Paypal',
-  BankTransfer = 'Bank Transfer',
-  Other = 'Other',
+  CREDIT_CARD = 'CREDIT_CARD',
+  PAYPAL = 'PAYPAL',
+  BANK_TRANSFER = 'BANK_TRANSFER',
+  OTHER = 'OTHER',
 }
 
 export enum InventoryType {
-  PURCHASE = 'Purchase', // Purchase
-  SALE = 'Sale', // Order out
-  RETURN = 'Return', // Order cancellation
-  ADJUSTMENT = 'Adjustment', // Inventory adjustment
+  PURCHASE = 'PURCHASE',
+  SALE = 'SALE',
+  RETURN = 'RETURN',
+  ADJUSTMENT = 'ADJUSTMENT',
 }
 
 export enum Gender {
-  MALE = 'Male',
-  FEMALE = 'Female',
-  OTHER = 'Other',
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
 }
 
 export enum Theme {
-  LIGHT = 'Light',
-  DARK = 'Dark',
+  LIGHT = 'LIGHT',
+  DARK = 'DARK',
 }
 
 export enum ShipmentStatus {
-  Pending = 'PENDING',
-  Shipped = 'SHIPPED',
-  InTransit = 'IN_TRANSIT',
-  Delivered = 'DELIVERED',
-  Failed = 'FAILED',
-  Returned = 'RETURNED',
+  PENDING = 'PENDING',
+  SHIPPED = 'SHIPPED',
+  IN_TRANSIT = 'IN_TRANSIT',
+  DELIVERED = 'DELIVERED',
+  FAILED = 'FAILED',
+  RETURNED = 'RETURNED',
 }
 
 export enum Carrier {
   DHL = 'DHL',
-  FedEx = 'FEDEX',
+  FEDEX = 'FEDEX',
   UPS = 'UPS',
   USPS = 'USPS',
-  Aramex = 'ARAMEX',
-  LocalCourier = 'LOCAL_COURIER',
+  ARAMEX = 'ARAMEX',
+  LOCAL_COURIER = 'LOCAL_COURIER',
 }
 
 export enum CategoryType {

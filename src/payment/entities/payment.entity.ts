@@ -17,7 +17,7 @@ export class Payment extends BaseEntity {
   @Column({
     type: 'enum',
     enum: PaymentStatus,
-    default: PaymentStatus.Pending,
+    default: PaymentStatus.PENDING,
   })
   @Field(() => PaymentStatus)
   status: PaymentStatus;
