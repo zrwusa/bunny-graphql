@@ -54,5 +54,5 @@ export class Product extends BaseEntity {
   @OneToMany(() => ProductReview, (review) => review.product, {
     lazy: true,
   })
-  reviews!: Promise<ProductReview[]>; // Product Reviews
+  reviews!: ProductReview[]; // Product Reviews
 }

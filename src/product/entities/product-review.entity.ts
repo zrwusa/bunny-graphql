@@ -20,15 +20,17 @@ export class ProductReview extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   comment?: string; // Review content
 
-  @Field(() => Product)
+  @Field(() => Product, { nullable: true })
   @ManyToOne(() => Product, (product) => product.reviews, {
+    nullable: true,
     onDelete: 'CASCADE',
   })
-  product!: Product; // Related Product
+  product?: Product; // Related Product
 
-  @Field(() => ProductVariant)
+  @Field(() => ProductVariant, { nullable: true })
   @ManyToOne(() => ProductVariant, (variant) => variant.reviews, {
+    nullable: true,
     onDelete: 'CASCADE',
   })
-  variant!: ProductVariant; // Related Variant
+  variant?: ProductVariant; // Related Variant
 }

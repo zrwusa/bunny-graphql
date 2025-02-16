@@ -5,6 +5,7 @@ import { Product } from './product.entity';
 import { Inventory } from './inventory.entity';
 import { ProductPrice } from './product-price.entity';
 import { ProductReview } from './product-review.entity';
+import { InventoryRecord } from './inventory-record.entity';
 
 @ObjectType()
 @Entity('product_variants')
@@ -38,10 +39,25 @@ export class ProductVariant extends BaseEntity {
   @Field(() => [Inventory])
   @OneToMany(() => Inventory, (inventory) => inventory.variant, {
     eager: true,
+    cascade: true,
   })
   inventories!: Inventory[]; // Associated inventory
 
+  @Field(() => [InventoryRecord])
+  @OneToMany(
+    () => InventoryRecord,
+    (inventoryRecord) => inventoryRecord.variant,
+    {
+      eager: true,
+      cascade: true,
+    },
+  )
+  inventoryRecords!: InventoryRecord[]; // Associated inventory
+
   @Field(() => [ProductReview])
-  @OneToMany(() => ProductReview, (review) => review.variant, { lazy: true })
-  reviews!: Promise<ProductReview[]>; // Product Reviews
+  @OneToMany(() => ProductReview, (review) => review.variant, {
+    lazy: true,
+    // cascade: true,
+  })
+  reviews!: ProductReview[]; // Variant Reviews
 }

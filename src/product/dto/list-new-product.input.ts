@@ -8,6 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { InventoryType } from '../../common/enums';
 
 @InputType()
 class ImageInput {
@@ -23,7 +24,7 @@ class ImageInput {
 @InputType()
 class PriceInput {
   @Field()
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2 })
   price: number;
 
   @Field()
@@ -55,6 +56,20 @@ class VariantInput {
   @Type(() => PriceInput)
   @IsOptional()
   prices?: PriceInput[];
+
+  @Field(() => [InventoryInput], { nullable: true })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => InventoryInput)
+  @IsOptional()
+  inventories?: InventoryInput[];
+
+  @Field(() => [InventoryRecordInput], { nullable: true })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => InventoryRecordInput)
+  @IsOptional()
+  inventoryRecords?: InventoryRecordInput[];
 }
 
 @InputType()
@@ -70,6 +85,44 @@ class CategoryInput {
   @IsString()
   name: string;
 }
+
+@InputType()
+class InventoryInput {
+  @Field()
+  @IsNumber({ maxDecimalPlaces: 0 })
+  quantity: number;
+}
+
+@InputType()
+class InventoryRecordInput {
+  @Field()
+  @IsNumber({ maxDecimalPlaces: 0 })
+  changeQuantity: number;
+
+  @Field()
+  type: InventoryType;
+}
+
+// @InputType()
+// class UserInput {
+//   @Field()
+//   @IsString()
+//   username: string;
+// }
+
+// @InputType()
+// class ReviewInput {
+//   @Field()
+//   @IsNumber({ maxDecimalPlaces: 0 })
+//   rating: number;
+//
+//   @Field()
+//   @IsString()
+//   comment: string;
+//
+//   @Field()
+//   user: UserInput;
+// }
 
 @InputType()
 export class ListNewProductInput {
@@ -102,4 +155,10 @@ export class ListNewProductInput {
   @ValidateNested({ each: true })
   @Type(() => VariantInput)
   variants: VariantInput[];
+
+  // @Field(() => [ReviewInput])
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => ReviewInput)
+  // reviews: ReviewInput[];
 }

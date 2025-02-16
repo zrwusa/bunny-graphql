@@ -13,7 +13,9 @@ registerEnumType(InventoryType, {
 @ObjectType()
 export class InventoryRecord extends BaseEntity {
   @Field(() => ProductVariant)
-  @ManyToOne(() => ProductVariant, (variant) => variant.inventories)
+  @ManyToOne(() => ProductVariant, (variant) => variant.inventoryRecords, {
+    onDelete: 'CASCADE',
+  })
   variant: ProductVariant;
 
   @Field(() => Int)

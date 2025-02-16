@@ -32,21 +32,21 @@ export enum PaymentMethod {
 }
 
 export enum InventoryType {
-  PURCHASE = 'purchase', // Purchase
-  SALE = 'sale', // Order out
-  RETURN = 'return', // Order cancellation
-  ADJUSTMENT = 'adjustment', // Inventory adjustment
+  PURCHASE = 'Purchase', // Purchase
+  SALE = 'Sale', // Order out
+  RETURN = 'Return', // Order cancellation
+  ADJUSTMENT = 'Adjustment', // Inventory adjustment
 }
 
 export enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-  OTHER = 'other',
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHER = 'Other',
 }
 
 export enum Theme {
-  LIGHT = 'light',
-  DARK = 'dark',
+  LIGHT = 'Light',
+  DARK = 'Dark',
 }
 
 export enum ShipmentStatus {

@@ -51,8 +51,8 @@ type ProductReview {
     user: User!
     rating: Int!
     comment: String
-    product: Product!
-    variant: ProductVariant!
+    product: Product
+    variant: ProductVariant
 }
 
 type Product {
@@ -96,6 +96,24 @@ type ProductPrice {
     variant: ProductVariant!
 }
 
+type InventoryRecord {
+    id: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    variant: ProductVariant!
+    changeQuantity: Int!
+    type: InventoryType!
+    reason: String
+    order: Order
+}
+
+enum InventoryType {
+    PURCHASE
+    SALE
+    RETURN
+    ADJUSTMENT
+}
+
 type ProductVariant {
     id: String!
     createdAt: DateTime!
@@ -106,6 +124,7 @@ type ProductVariant {
     prices: [ProductPrice!]!
     product: Product!
     inventories: [Inventory!]!
+    inventoryRecords: [InventoryRecord!]!
     reviews: [ProductReview!]!
 }
 
@@ -230,24 +249,6 @@ type User {
     reviews: [ProductReview!]
 }
 
-type InventoryRecord {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    variant: ProductVariant!
-    changeQuantity: Int!
-    type: InventoryType!
-    reason: String
-    order: Order
-}
-
-enum InventoryType {
-    PURCHASE
-    SALE
-    RETURN
-    ADJUSTMENT
-}
-
 type App {
     message: String!
 }
@@ -367,12 +368,23 @@ input VariantInput {
     sku: String!
     color: String!
     prices: [PriceInput!]
+    inventories: [InventoryInput!]
+    inventoryRecords: [InventoryRecordInput!]
 }
 
 input PriceInput {
     price: Float!
     validFrom: DateTime!
     validTo: DateTime!
+}
+
+input InventoryInput {
+    quantity: Float!
+}
+
+input InventoryRecordInput {
+    changeQuantity: Float!
+    type: String!
 }
 
 input CreateOrderInput {
