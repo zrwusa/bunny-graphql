@@ -206,7 +206,7 @@ query {
     }
 }
 ```
-
+    
 ### Create product
 
 ```graphql

@@ -6,6 +6,7 @@ import { Brand } from './brand.entity';
 import { ProductVariant } from './product-variant.entity';
 import { ProductImage } from './product-image.entity';
 import { ProductReview } from './product-review.entity';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @Entity({ name: 'products' })
 @ObjectType()
@@ -14,9 +15,9 @@ export class Product extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   name!: string; // Product Name
 
-  @Field({ nullable: true })
-  @Column({ type: 'text', nullable: true })
-  description?: string; // Product Description
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
+  description?: any; // Product Description
 
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {
