@@ -66,7 +66,7 @@ export class OrderService {
         // Calculate the current inventory
         const totalStock = await manager
           .createQueryBuilder(InventoryRecord, 'inventory_records')
-          .where('inventory_records.variantId = :variantId', {
+          .where('inventory_records.variant_id = :variantId', {
             variantId,
           })
           .select('SUM(inventory_records.change_quantity)', 'totalStock')

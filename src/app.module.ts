@@ -37,17 +37,18 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'src/generated/schema.gql',
-      debug: true,
-      playground: true,
-      introspection: true,
+      autoSchemaFile: 'src/generated/schema.gql', // Automatically generate GraphQL schema and save it to a file
+      debug: true, // Enable debugging mode to log detailed GraphQL execution info
+      playground: true, // Enable GraphQL Playground for in-browser query testing
+      introspection: true, // Allow introspection queries to fetch schema details
       formatError: (error) => {
         console.error('GraphQL Error:', error);
         return error;
       },
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      // TypeORM must wait for ConfigModule to parse .env to be properly initialized, so forRootAsync() is the best practice over forRoot()
+      imports: [ConfigModule], // ConfigModule.forRoot() has been introduced globally in AppModule's imports. In theory, imports: [ConfigModule] can be omitted, but it is recommended to retain them to ensure stability.
       useFactory: async (configService: ConfigService) => {
         // Transform non-injectable objects into providers using useValue and useFactory
         return {
@@ -84,7 +85,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
           logging: ['query', 'error'], //Turn on SQL query and error logging
         };
       },
-      inject: [ConfigService],
+      inject: [ConfigService], // The useFactory of forRootAsync cannot directly access the global ConfigService, and must be explicitly injected
     }),
     UsersModule,
     ProductModule,
