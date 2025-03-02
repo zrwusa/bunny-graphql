@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { FilterOrderInput } from './dto/filter-order.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
@@ -58,10 +54,7 @@ export class OrderService {
           id: variantId,
         });
 
-        if (!variant)
-          throw new NotFoundException(
-            `Product variant ID ${variantId} not found`,
-          );
+        if (!variant) throw new NotFoundException(`Product variant ID ${variantId} not found`);
 
         // Calculate the current inventory
         const totalStock = await manager
@@ -73,9 +66,7 @@ export class OrderService {
           .getRawOne<{ totalStock: string }>();
 
         if ((Number(totalStock.totalStock) || 0) < quantity) {
-          throw new BadRequestException(
-            `Product variant ${variant.product.name} is out of stock`,
-          );
+          throw new BadRequestException(`Product variant ${variant.product.name} is out of stock`);
         }
         const price = variant.prices[0].price;
         const subtotal = price * quantity;

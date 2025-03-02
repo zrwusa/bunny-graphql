@@ -3,12 +3,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { OrderItem } from './order-item.entity';
 import { User } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
-import {
-  OrderStatus,
-  PaymentMethod,
-  PaymentStatus,
-  ShippingStatus,
-} from '../../common/enums';
+import { OrderStatus, PaymentMethod, PaymentStatus, ShippingStatus } from '../../common/enums';
 import { Payment } from '../../payment/entities/payment.entity';
 
 registerEnumType(OrderStatus, { name: 'OrderStatus' });

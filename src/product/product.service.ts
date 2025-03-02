@@ -1,27 +1,26 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { Brand } from './entities/brand.entity';
 import { Category } from './entities/category.entity';
-import { ListNewProductInput } from './dto/list-new-product.input';
+import { PublishProductInput } from './dto/publish-product.input';
 import { Warehouse } from './entities/warehouse.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectRepository(Product)
-    private productsRepository: Repository<Product>,
+    @InjectRepository(Product) private productRepo: Repository<Product>,
     private readonly dataSource: DataSource,
   ) {}
 
   findAll() {
-    return this.productsRepository.find();
+    return this.productRepo.find();
   }
 
   findOne(id: string) {
-    return this.productsRepository.findOne({
+    return this.productRepo.findOne({
       where: { id },
     });
   }
@@ -29,11 +28,11 @@ export class ProductService {
   create(createProductInput: CreateProductInput) {
     const { brandId } = createProductInput;
     if (!brandId) throw new BadRequestException('Brand ID is required');
-    const newProduct = this.productsRepository.create(createProductInput);
-    return this.productsRepository.save(newProduct);
+    const newProduct = this.productRepo.create(createProductInput);
+    return this.productRepo.save(newProduct);
   }
 
-  async listNewProduct(listNewProductInput: ListNewProductInput) {
+  async publishProduct(publishProductInput: PublishProductInput) {
     return await this.dataSource.transaction(async (manager) => {
       const brandRepo = manager.getRepository(Brand);
       const categoryRepo = manager.getRepository(Category);
@@ -41,38 +40,41 @@ export class ProductService {
       const warehouseRepo = manager.getRepository(Warehouse);
 
       // Handle Brand (supports id or name)
-      const { brand } = listNewProductInput;
-      let brandEntity: Brand | null = null;
+      const {
+        brand: { id: brandId, name: brandName },
+      } = publishProductInput;
 
-      if (brand.id) {
-        brandEntity = await brandRepo.findOne({ where: { id: brand.id } });
-        if (!brandEntity)
-          throw new Error(`Brand with id ${brand.id} not found`);
+      let brand: Brand | null = null;
+
+      if (brandId) {
+        brand = await brandRepo.findOne({ where: { id: brandId } });
+        if (!brand) throw new NotFoundException(`Brand with id ${brandId} not found`);
       } else {
-        brandEntity =
-          (await brandRepo.findOne({ where: { name: brand.name } })) ||
-          brandRepo.create({ name: brand.name });
+        brand =
+          (await brandRepo.findOne({ where: { name: brandName } })) ||
+          brandRepo.create({ name: brandName });
       }
 
       // Handle Category (supports id or name)
-      const { category } = listNewProductInput;
-      let categoryEntity: Category | null = null;
+      const {
+        category: { id: categoryId, name: categoryName },
+      } = publishProductInput;
+      let category: Category | null = null;
 
-      if (category.id) {
-        categoryEntity = await categoryRepo.findOne({
-          where: { id: category.id },
+      if (categoryId) {
+        category = await categoryRepo.findOne({
+          where: { id: categoryId },
         });
-        if (!categoryEntity)
-          throw new Error(`Category with id ${category.id} not found`);
+        if (!category) throw new NotFoundException(`Category with id ${categoryId} not found`);
       } else {
-        categoryEntity =
-          (await categoryRepo.findOne({ where: { name: category.name } })) ||
-          categoryRepo.create({ name: category.name });
+        category =
+          (await categoryRepo.findOne({ where: { name: categoryName } })) ??
+          categoryRepo.create({ name: categoryName });
       }
 
       // Handle Variants & Inventories
       const variants = await Promise.all(
-        listNewProductInput.variants.map(async (variantInput) => {
+        publishProductInput.variants.map(async (variantInput) => {
           const inventories = await Promise.all(
             variantInput.inventories.map(async (inventoryInput) => {
               const { warehouse: warehouseInput } = inventoryInput;
@@ -83,12 +85,10 @@ export class ProductService {
                   where: { id: warehouseInput.id },
                 });
                 if (!warehouse)
-                  throw new Error(
-                    `Warehouse with id ${warehouseInput.id} not found`,
-                  );
+                  throw new NotFoundException(`Warehouse with id ${warehouseInput.id} not found`);
               } else {
                 if (!warehouseInput.name || !warehouseInput.location) {
-                  throw new Error(
+                  throw new BadRequestException(
                     `Warehouse must have both name and location if id is not provided`,
                   );
                 }
@@ -121,13 +121,13 @@ export class ProductService {
 
       // Create Product
       const product = productRepo.create({
-        ...listNewProductInput,
-        brand: brandEntity,
-        category: categoryEntity,
+        ...publishProductInput,
+        brand,
+        category,
         variants,
       });
 
-      return await productRepo.save(product);
+      return productRepo.save(product);
     });
   }
 }

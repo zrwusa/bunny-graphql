@@ -17,7 +17,7 @@ export class Product extends BaseEntity {
 
   @Field(() => GraphQLJSONObject, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  description?: any; // Product Description
+  description?: object; // Product Description
 
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {

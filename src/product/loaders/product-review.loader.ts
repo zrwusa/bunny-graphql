@@ -9,12 +9,8 @@ export class ProductReviewLoader {
   public readonly batchReviews = new DataLoader(
     async (keys: { type: 'product' | 'variant'; id: string }[]) => {
       // Step 1: Separate the IDs of Product and ProductVariant
-      const productIds = keys
-        .filter((k) => k.type === 'product')
-        .map((k) => k.id);
-      const variantIds = keys
-        .filter((k) => k.type === 'variant')
-        .map((k) => k.id);
+      const productIds = keys.filter((k) => k.type === 'product').map((k) => k.id);
+      const variantIds = keys.filter((k) => k.type === 'variant').map((k) => k.id);
 
       // Step 2: Batch query Product and ProductVariant related Reviews
       const reviews = await this.reviewRepository.find({

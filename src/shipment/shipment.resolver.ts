@@ -9,30 +9,23 @@ export class ShipmentResolver {
   constructor(private readonly shipmentService: ShipmentService) {}
 
   @Mutation(() => Shipment)
-  createShipment(
-    @Args('createShipmentInput') createShipmentInput: CreateShipmentInput,
-  ) {
+  createShipment(@Args('createShipmentInput') createShipmentInput: CreateShipmentInput) {
     return this.shipmentService.create(createShipmentInput);
   }
 
   @Query(() => [Shipment], { name: 'shipments' })
-  findAll() {
+  getShipments() {
     return this.shipmentService.findAll();
   }
 
   @Query(() => Shipment, { name: 'shipment' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  getShipmentById(@Args('id', { type: () => Int }) id: number) {
     return this.shipmentService.findOne(id);
   }
 
   @Mutation(() => Shipment)
-  updateShipment(
-    @Args('updateShipmentInput') updateShipmentInput: UpdateShipmentInput,
-  ) {
-    return this.shipmentService.update(
-      updateShipmentInput.id,
-      updateShipmentInput,
-    );
+  updateShipment(@Args('updateShipmentInput') updateShipmentInput: UpdateShipmentInput) {
+    return this.shipmentService.update(updateShipmentInput.id, updateShipmentInput);
   }
 
   @Mutation(() => Shipment)

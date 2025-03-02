@@ -25,11 +25,8 @@ export class UserPreferenceService {
 
     if (!findUser) throw new Error('User Not Found');
 
-    const newUserSetting = this.userSettingsRepository.create(
-      createUserPreferenceInput,
-    );
-    const savedSettings =
-      await this.userSettingsRepository.save(newUserSetting);
+    const newUserSetting = this.userSettingsRepository.create(createUserPreferenceInput);
+    const savedSettings = await this.userSettingsRepository.save(newUserSetting);
 
     findUser.preference = savedSettings;
     await this.userRepository.save(findUser);

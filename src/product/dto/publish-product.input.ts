@@ -3,6 +3,7 @@ import {
   IsArray,
   IsDate,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   ValidateIf,
@@ -10,6 +11,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { InventoryType } from '../../common/enums';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
 class ImageInput {
@@ -167,14 +169,14 @@ class InventoryRecordInput {
 // }
 
 @InputType()
-export class ListNewProductInput {
+export class PublishProductInput {
   @Field()
   @IsString()
   name: string;
 
-  @Field()
-  @IsString()
-  description: string;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @IsObject()
+  description?: object;
 
   @Field(() => BrandInput)
   @ValidateNested()

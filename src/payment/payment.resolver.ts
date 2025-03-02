@@ -9,38 +9,28 @@ export class PaymentResolver {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Mutation(() => Payment)
-  createPayment(
-    @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
-  ) {
+  createPayment(@Args('createPaymentInput') createPaymentInput: CreatePaymentInput) {
     return this.paymentService.create(createPaymentInput.orderId);
   }
 
   @Mutation(() => Payment)
-  async confirmPayment(
-    @Args('paymentId') paymentId: string,
-    @Args('status') status: string,
-  ) {
+  async confirmPayment(@Args('paymentId') paymentId: string, @Args('status') status: string) {
     return this.paymentService.confirm(paymentId, status);
   }
 
   @Query(() => [Payment], { name: 'payments' })
-  findAll() {
+  getPayments() {
     return this.paymentService.findAll();
   }
 
   @Query(() => Payment, { name: 'payment' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  getPaymentById(@Args('id', { type: () => Int }) id: number) {
     return this.paymentService.findOne(id);
   }
 
   @Mutation(() => Payment)
-  updatePayment(
-    @Args('updatePaymentInput') updatePaymentInput: UpdatePaymentInput,
-  ) {
-    return this.paymentService.update(
-      updatePaymentInput.id,
-      updatePaymentInput,
-    );
+  updatePayment(@Args('updatePaymentInput') updatePaymentInput: UpdatePaymentInput) {
+    return this.paymentService.update(updatePaymentInput.id, updatePaymentInput);
   }
 
   @Mutation(() => Payment)

@@ -3,12 +3,7 @@ import { OrderResolver } from './order.resolver';
 import { OrderService } from './order.service';
 import { Order } from './entities/order.entity';
 import { FilterOrderInput } from './dto/filter-order.input';
-import {
-  OrderStatus,
-  PaymentMethod,
-  PaymentStatus,
-  ShippingStatus,
-} from '../common/enums';
+import { OrderStatus, PaymentMethod, PaymentStatus, ShippingStatus } from '../common/enums';
 import { User } from '../user/entities/user.entity';
 
 describe('OrderResolver', () => {
@@ -87,14 +82,8 @@ describe('OrderResolver', () => {
       expect(firstOrder.user).toHaveProperty('username', 'john_doe');
       expect(firstOrder).toHaveProperty('status', OrderStatus.Pending);
       expect(firstOrder).toHaveProperty('paymentStatus', PaymentStatus.Pending);
-      expect(firstOrder).toHaveProperty(
-        'shippingStatus',
-        ShippingStatus.Pending,
-      );
-      expect(firstOrder).toHaveProperty(
-        'paymentMethod',
-        PaymentMethod.CreditCard,
-      );
+      expect(firstOrder).toHaveProperty('shippingStatus', ShippingStatus.Pending);
+      expect(firstOrder).toHaveProperty('paymentMethod', PaymentMethod.CreditCard);
       expect(firstOrder).toHaveProperty('totalPrice', 200.0);
     });
   });

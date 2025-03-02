@@ -229,10 +229,53 @@ mutation {
 
 ```graphql
 mutation {
-    listNewProduct(
-        listNewProductInput: {
+    publishProduct(
+        publishProductInput: {
             name: "Megamax"
-            description: "Ridgid Megamax Rotary Hammer Head"
+            description: {
+                overview: {
+                    model: "R86400B"
+                    store_sku: "1001102029"
+                    description: "RIDGID Introduces the MegaMax Brushless 18-Volt Power Base (Tool Only). This head pairs up with any MegaMax Attachment Head to create the most powerful and intelligent interchangeable tool system on the jobsite. This product is Backed by the industry's only lifetime service agreement."
+                    features: [
+                        "MEGAMax is the industry's most powerful interchangeable tool system"
+                        "4 directional head positions allow the user to optimize ergonomics based on the application"
+                        "Smart Power Base automatically identifies the attachment head and configures tool settings to match"
+                        "LED Communication Panel shows the status of the tool and attached head"
+                        "Tool-Free Die-Cast Interface provides a secure locking mechanism with release button for quick and easy attachment head changes"
+                        "Lifetime Service Agreement: Free parts and service for life with registration"
+                    ]
+                    includes: [
+                        "18V OCTANE Brushless MEGAMax Power Base"
+                        "Operator's manual"
+                        "MegaMax attachment heads (Batteries and Chargers sold separately)"
+                    ]
+                }
+                manual: [
+                    "R86400_Operators_Manual-pdf.pdf"
+                    "1001102029_warranty-pdf.pdf"
+                ]
+                accessibility: { pdf_request_contact: "1-800-628-0525" }
+                dimensions: {
+                    assembled: {
+                        depth_in: 11.89
+                        height_in: 8.976
+                        weight_lbs: 5.83
+                        width_in: 5.354
+                    }
+                    packaged: {
+                        depth_in: 11.89
+                        height_in: 8.976
+                        weight_lbs: 5.83
+                        width_in: 5.354
+                    }
+                }
+                details: { certified: false, country_of_origin: "CN - China" }
+                warranty: {
+                    description: "Lifetime Service Agreement with registration within 90 days of purchase."
+                    contact: "1-866-539-1710"
+                }
+            }
             brand: { name: "Ridgid" }
             category: { name: "Multi Functional Tools" }
             images: [
@@ -241,11 +284,11 @@ mutation {
                     position: 4
                 }
                 {
-                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
+                    url: "https://i0.wp.com/toolguyd.com/blog/wp-content/uploads/2018/10/Ridgid-MegaMax-Octane-Tool-Attachments.jpg?resize=590%2C404&ssl=1"
                     position: 1
                 }
                 {
-                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_U.jpg?product-images=xs"
+                    url: "https://images.homedepot.ca/productimages/p_1001102029_alt_R8640_G.jpg?product-images=l"
                     position: 3
                 }
                 {
@@ -265,7 +308,7 @@ mutation {
                             validTo: "2025-02-14T08:36:10.000Z"
                         }
                         {
-                            price: 198
+                            price: 206
                             validFrom: "2025-02-15T08:36:06.000Z"
                             validTo: "2025-03-01T08:36:10.000Z"
                         }
@@ -340,7 +383,6 @@ mutation {
         }
     }
 }
-
 ```
 
 ### Get orders

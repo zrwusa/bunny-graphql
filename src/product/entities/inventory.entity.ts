@@ -7,6 +7,7 @@ import { Warehouse } from './warehouse.entity';
 @ObjectType()
 @Entity('inventories')
 @Unique(['variant', 'warehouse']) // sku warehouse only
+// In addition to saving information, inventories table also plays the role of a junction table, connecting product_variants (product variants) and warehouses (warehouses), thus establishing a many-to-many relationship.
 export class Inventory extends BaseEntity {
   @Field()
   @Column({ type: 'int', default: 0 })

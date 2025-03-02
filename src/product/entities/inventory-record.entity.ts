@@ -12,6 +12,7 @@ registerEnumType(InventoryType, {
 @Entity({ name: 'inventory_records' })
 @ObjectType()
 export class InventoryRecord extends BaseEntity {
+  // TODO many to one relationship needs to be reconsidered, should it be with Inventory or with Variant.
   @Field(() => ProductVariant)
   @ManyToOne(() => ProductVariant, (variant) => variant.inventoryRecords, {
     onDelete: 'CASCADE',

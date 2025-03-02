@@ -60,9 +60,7 @@ describe('OrderService', () => {
         } as Order,
       ];
 
-      const findMock = jest
-        .spyOn(orderRepository, 'find')
-        .mockResolvedValue(mockOrders);
+      const findMock = jest.spyOn(orderRepository, 'find').mockResolvedValue(mockOrders);
 
       const result = await service.findAll({ page: 1, pageSize: 10 });
 

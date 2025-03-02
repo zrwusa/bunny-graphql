@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
 export class CreateProductInput {
@@ -11,6 +12,6 @@ export class CreateProductInput {
   @Field()
   price!: number;
 
-  @Field({ nullable: true })
-  description: string;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  description?: object;
 }

@@ -294,8 +294,6 @@ type Query {
   users: [User!]!
   product(id: String!): Product
   products: [Product!]!
-  inventoryRecords: [InventoryRecord!]!
-  inventoryRecord(id: Int!): InventoryRecord!
   orders(filterOrderInput: FilterOrderInput!): [Order!]!
   payments: [Payment!]!
   payment(id: Int!): Payment!
@@ -315,8 +313,7 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   createUserSettings(createUserPreferenceInput: CreateUserPreferenceInput!): UserPreference!
   createProduct(createProductInput: CreateProductInput!): Product!
-  listNewProduct(listNewProductInput: ListNewProductInput!): Product!
-  removeInventory(id: Int!): InventoryRecord!
+  publishProduct(publishProductInput: PublishProductInput!): Product!
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createPayment(createPaymentInput: CreatePaymentInput!): Payment!
   confirmPayment(paymentId: String!, status: String!): Payment!
@@ -343,12 +340,12 @@ input CreateProductInput {
   name: String!
   brandId: String!
   price: Float!
-  description: String
+  description: JSONObject
 }
 
-input ListNewProductInput {
+input PublishProductInput {
   name: String!
-  description: String!
+  description: JSONObject
   brand: BrandInput!
   category: CategoryInput!
   images: [ImageInput!]!

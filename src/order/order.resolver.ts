@@ -16,12 +16,12 @@ export class OrderResolver {
   }
 
   @Query(() => [Order], { name: 'orders' })
-  findAll(@Args('filterOrderInput') filterOrderInput: FilterOrderInput) {
+  getOrders(@Args('filterOrderInput') filterOrderInput: FilterOrderInput) {
     return this.orderService.findAll(filterOrderInput);
   }
 
   // @Query(() => Order, { name: 'order' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
+  // getOrderById(@Args('id', { type: () => Int }) id: number) {
   //   return this.orderService.findOne(id);
   // }
 

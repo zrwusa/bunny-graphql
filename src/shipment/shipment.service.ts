@@ -13,7 +13,7 @@ export class ShipmentService {
   ) {}
 
   create(createShipmentInput: CreateShipmentInput) {
-    return 'This action adds a new shipment';
+    return `This action adds a new shipment ${createShipmentInput.exampleField}`;
   }
 
   findAll() {
@@ -25,7 +25,7 @@ export class ShipmentService {
   }
 
   update(id: number, updateShipmentInput: UpdateShipmentInput) {
-    return `This action updates a #${id} shipment`;
+    return `This action updates a #${id} shipment, id: ${updateShipmentInput.id}`;
   }
 
   remove(id: number) {

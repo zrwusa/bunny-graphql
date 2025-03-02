@@ -101,7 +101,7 @@ When working with TypeORM relations, it's important to be aware of the performan
       @Query(() => [Product])
       async products(@Info() info: GraphQLResolveInfo) {
         const fields = graphqlFields(info);
-        const query = this.productRepository.createQueryBuilder('product');
+        const query = this.productRepo.createQueryBuilder('product');
   
         if (fields.category) {
           query.leftJoinAndSelect('product.category', 'category');

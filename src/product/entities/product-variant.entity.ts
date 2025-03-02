@@ -44,14 +44,10 @@ export class ProductVariant extends BaseEntity {
   inventories!: Inventory[]; // Associated inventory
 
   @Field(() => [InventoryRecord])
-  @OneToMany(
-    () => InventoryRecord,
-    (inventoryRecord) => inventoryRecord.variant,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => InventoryRecord, (inventoryRecord) => inventoryRecord.variant, {
+    eager: true,
+    cascade: true,
+  })
   inventoryRecords!: InventoryRecord[];
 
   @Field(() => [ProductReview])

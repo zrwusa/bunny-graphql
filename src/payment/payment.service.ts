@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from '../order/entities/order.entity';
@@ -13,10 +9,8 @@ import { UpdatePaymentInput } from './dto/update-payment.input';
 @Injectable()
 export class PaymentService {
   constructor(
-    @InjectRepository(Order)
-    private readonly orderRepository: Repository<Order>,
-    @InjectRepository(Payment)
-    private readonly paymentRepository: Repository<Payment>,
+    @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
+    @InjectRepository(Payment) private readonly paymentRepository: Repository<Payment>,
   ) {}
 
   async create(orderId: string) {

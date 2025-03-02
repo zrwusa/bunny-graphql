@@ -9,27 +9,27 @@ export class InventoryRecordResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 
   // @Mutation(() => Inventory)
-  // createInventory(@Args('createInventoryInput') createInventoryInput: CreateInventoryInput) {
+  // createInventoryRecord(@Args('createInventoryInput') createInventoryInput: CreateInventoryInput) {
   //   return this.inventoryService.create(createInventoryInput);
   // }
 
   @Query(() => [InventoryRecord], { name: 'inventoryRecords' })
-  findAll() {
+  getInventoryRecords() {
     return this.inventoryService.findAll();
   }
 
   @Query(() => InventoryRecord, { name: 'inventoryRecord' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  getInventoryRecordById(@Args('id', { type: () => Int }) id: number) {
     return this.inventoryService.findOne(id);
   }
 
   // @Mutation(() => Inventory)
-  // updateInventory(@Args('updateInventoryInput') updateInventoryInput: UpdateInventoryInput) {
+  // updateInventoryRecord(@Args('updateInventoryInput') updateInventoryInput: UpdateInventoryInput) {
   //   return this.inventoryService.update(updateInventoryInput.id, updateInventoryInput);
   // }
 
   @Mutation(() => InventoryRecord)
-  removeInventory(@Args('id', { type: () => Int }) id: number) {
+  removeInventoryRecord(@Args('id', { type: () => Int }) id: number) {
     return this.inventoryService.remove(id);
   }
 }

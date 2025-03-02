@@ -8,12 +8,12 @@ export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Query(() => User, { name: 'user', nullable: true })
-  findOne(@Args('id') id: string) {
+  getUserById(@Args('id') id: string) {
     return this.userService.findOne(id);
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
+  getUsers() {
     return this.userService.findAll();
   }
 
