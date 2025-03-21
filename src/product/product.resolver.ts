@@ -6,12 +6,17 @@ import { ProductReviewLoader } from './loaders/product-review.loader';
 import { ProductReview } from './entities/product-review.entity';
 import { PublishProductInput } from './dto/publish-product.input';
 
-@Resolver(() => Product)
+@Resolver(() => Product) // When we use @ResolveField() to parse Product-related fields (for example, reviews()), () => Product is necessary.
 export class ProductResolver {
   constructor(
     private readonly productService: ProductService, // In NestJS, almost all dependency injection objects (Service, Repository, Loader, etc.) should be readonly, because: these objects are essentially singletons, and their life cycles are managed by NestJS and should always remain unchanged. It does not need to be reassigned, so readonly ensures that it will not be modified, in line with the design philosophy of NestJS。
     private readonly productReviewLoader: ProductReviewLoader,
   ) {}
+
+  @ResolveField(() => [ProductReview])
+  async reviews(@Parent() product: Product) {
+    return this.productReviewLoader.loadProductReviews(product.id);
+  }
 
   @Query(() => Product, { name: 'product', nullable: true })
   getProductById(@Args('id') id: string) {
@@ -33,8 +38,9 @@ export class ProductResolver {
     return this.productService.publishProduct(publishProductInput);
   }
 
-  @ResolveField(() => [ProductReview])
-  async reviews(@Parent() product: Product) {
-    return this.productReviewLoader.loadProductReviews(product.id);
+  @Mutation(() => Boolean)
+  async bulkIndexProducts() {
+    await this.productService.bulkIndexProducts();
+    return true;
   }
 }

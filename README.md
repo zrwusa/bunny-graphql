@@ -225,7 +225,7 @@ mutation {
 }
 ```
 
-### List new product
+### Publish new product
 
 ```graphql
 mutation {

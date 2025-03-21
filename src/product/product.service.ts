@@ -10,17 +10,6 @@ import { Warehouse } from './entities/warehouse.entity';
 import { SearchService } from '../search/search.service';
 import { SearchProductDto } from '../search/dto/search-product.dto';
 
-export function transformProductToSearchDto(product: Product): SearchProductDto {
-  return {
-    id: product.id.toString(),
-    name: product.name,
-    description: product.description || {},
-    category: product.category?.name || '',
-    brand: product.brand?.name || '',
-    variants: product.variants?.map((v) => v.size) || [],
-  };
-}
-
 @Injectable()
 export class ProductService {
   constructor(
@@ -28,6 +17,24 @@ export class ProductService {
     private readonly dataSource: DataSource,
     private readonly searchService: SearchService,
   ) {}
+
+  static transformProductToSearchDto({
+    id,
+    name,
+    description,
+    category,
+    brand,
+    variants,
+  }: Product): SearchProductDto {
+    return {
+      id: id.toString(),
+      name: name,
+      description: description || {},
+      category: category?.name || '',
+      brand: brand?.name || '',
+      variants: variants?.map((v) => v.size) || [],
+    };
+  }
 
   findAll() {
     return this.productRepo.find();
@@ -146,8 +153,9 @@ export class ProductService {
   }
 
   // Batch synchronized products (optional for timing tasks)
-  async bulkIndexProducts(products: Product[]) {
-    const searchProducts = products.map(transformProductToSearchDto);
+  async bulkIndexProducts(products?: Product[]) {
+    if (products === undefined) products = await this.findAll();
+    const searchProducts = products.map(ProductService.transformProductToSearchDto);
     return this.searchService.bulkIndexProducts(searchProducts);
   }
 }
