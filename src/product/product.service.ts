@@ -7,12 +7,26 @@ import { Brand } from './entities/brand.entity';
 import { Category } from './entities/category.entity';
 import { PublishProductInput } from './dto/publish-product.input';
 import { Warehouse } from './entities/warehouse.entity';
+import { SearchService } from '../search/search.service';
+import { SearchProductDto } from '../search/dto/search-product.dto';
+
+export function transformProductToSearchDto(product: Product): SearchProductDto {
+  return {
+    id: product.id.toString(),
+    name: product.name,
+    description: product.description || {},
+    category: product.category?.name || '',
+    brand: product.brand?.name || '',
+    variants: product.variants?.map((v) => v.size) || [],
+  };
+}
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productRepo: Repository<Product>,
     private readonly dataSource: DataSource,
+    private readonly searchService: SearchService,
   ) {}
 
   findAll() {
@@ -129,5 +143,11 @@ export class ProductService {
 
       return productRepo.save(product);
     });
+  }
+
+  // Batch synchronized products (optional for timing tasks)
+  async bulkIndexProducts(products: Product[]) {
+    const searchProducts = products.map(transformProductToSearchDto);
+    return this.searchService.bulkIndexProducts(searchProducts);
   }
 }

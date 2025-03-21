@@ -29,6 +29,7 @@ import { ProductVariant } from './product/entities/product-variant.entity';
 import { Warehouse } from './product/entities/warehouse.entity';
 import { Brand } from './product/entities/brand.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     OrderModule,
     PaymentModule,
     ShipmentModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [AppResolver],

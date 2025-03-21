@@ -383,6 +383,153 @@ mutation {
         }
     }
 }
+
+mutation {
+    publishProduct(
+        publishProductInput: {
+            name: "Artisan Series Stand Mixer"
+            description: {
+                overview: {
+                    model: "KSM150PS"
+                    store_sku: "9876543210"
+                    description: "The KitchenAid Artisan Series Stand Mixer features a powerful 325-watt motor, 10-speed slide control, and a tilt-head design for easy access to the bowl. It comes with a 5-quart stainless steel bowl and includes a flat beater, dough hook, and wire whip."
+                    features: [
+                        "325-watt motor for powerful performance"
+                        "10-speed slide control for precise mixing"
+                        "Tilt-head design for easy access to the bowl"
+                        "Includes 5-quart stainless steel bowl"
+                        "Comes with flat beater, dough hook, and wire whip"
+                    ]
+                    includes: [
+                        "Stand Mixer"
+                        "5-quart Stainless Steel Bowl"
+                        "Flat Beater"
+                        "Dough Hook"
+                        "Wire Whip"
+                    ]
+                }
+                manual: ["KSM150PS_Manual.pdf", "9876543210_Warranty.pdf"]
+                accessibility: { pdf_request_contact: "1-800-541-6390" }
+                dimensions: {
+                    assembled: {
+                        depth_in: 14.0
+                        height_in: 17.5
+                        weight_lbs: 18.0
+                        width_in: 8.7
+                    }
+                    packaged: {
+                        depth_in: 20.0
+                        height_in: 22.0
+                        weight_lbs: 25.0
+                        width_in: 12.0
+                    }
+                }
+                details: { certified: true, country_of_origin: "USA" }
+                warranty: {
+                    description: "1-year limited warranty with registration within 90 days of purchase."
+                    contact: "1-800-541-6390"
+                }
+            }
+            brand: { name: "KitchenAid" }
+            category: { name: "Home Appliances" }
+            images: [
+                {
+                    url: "https://images.homedepot.ca/productimages/p_1000987654.jpg?product-images=l"
+                    position: 1
+                }
+                {
+                    url: "https://i0.wp.com/toolguyd.com/blog/wp-content/uploads/2021/03/KitchenAid-Artisan-Mixer.jpg?resize=590%2C404&ssl=1"
+                    position: 2
+                }
+            ]
+            variants: [
+                {
+                    size: "Standard"
+                    sku: "KitchenAid-KSM150BP"
+                    color: "Empire Red"
+                    prices: [
+                        {
+                            price: 399.99
+                            validFrom: "2025-01-01T08:00:00.000Z"
+                            validTo: "2025-01-31T23:59:59.000Z"
+                        }
+                        {
+                            price: 429.99
+                            validFrom: "2025-02-01T00:00:00.000Z"
+                            validTo: "2025-02-28T23:59:59.000Z"
+                        }
+                    ]
+                    inventories: [{ quantity: 30, warehouse: { id: "3" } }]
+                    inventoryRecords: [{ changeQuantity: 30, type: "PURCHASE" }]
+                }
+                {
+                    size: "Large"
+                    sku: "KitchenAid-KSM150PS"
+                    color: "Onyx Black"
+                    prices: [
+                        {
+                            price: 399.99
+                            validFrom: "2025-01-01T08:00:00.000Z"
+                            validTo: "2025-01-31T23:59:59.000Z"
+                        }
+                        {
+                            price: 429.99
+                            validFrom: "2025-02-01T00:00:00.000Z"
+                            validTo: "2025-02-28T23:59:59.000Z"
+                        }
+                    ]
+                    inventories: [{ quantity: 20, warehouse: { id: "3" } }]
+                    inventoryRecords: [{ changeQuantity: 20, type: "PURCHASE" }]
+                }
+            ]
+        }
+    ) {
+        id
+        name
+        description
+        images {
+            id
+            url
+            position
+        }
+        brand {
+            id
+            name
+        }
+        category {
+            id
+            name
+        }
+        variants {
+            id
+            size
+            sku
+            color
+            prices {
+                id
+                price
+                validFrom
+                validTo
+            }
+            inventories {
+                id
+                quantity
+                warehouse {
+                    id
+                    name
+                    location
+                }
+            }
+            inventoryRecords {
+                id
+                changeQuantity
+                type
+                reason
+            }
+        }
+    }
+}
+
 ```
 
 ### Get orders

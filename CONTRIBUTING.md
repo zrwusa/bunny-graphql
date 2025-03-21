@@ -68,6 +68,13 @@
 nest g resource [module name]
 ```
 
+### "duplicate key value violates unique constraint" problem resolve
+```
+SELECT conname, conrelid::regclass, pg_get_constraintdef(oid)
+FROM pg_constraint
+WHERE conname = 'XX_xxxxxxxxxxxxxxxxxxxxxxxxxxx';
+```
+
 
 
 ## Contributing Guidelines
@@ -118,3 +125,8 @@ By following these guidelines, we can ensure efficient database interactions and
 For any questions or further clarification, feel free to open an issue or reach out to the maintainers. Happy coding!
 
 
+# Elasticsearch
+
+```shell
+ curl -X GET "https://localhost:9200/products/_search?pretty" -u elastic:dev_password --cacert certs/ca.crt --insecure
+```
