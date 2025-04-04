@@ -43,4 +43,9 @@ export class ProductResolver {
     await this.productService.bulkIndexProducts();
     return true;
   }
+
+  @Query(() => [Product])
+  async searchProducts(@Args('keyword') keyword: string) {
+    return this.productService.searchProducts(keyword);
+  }
 }

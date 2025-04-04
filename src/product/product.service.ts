@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { Brand } from './entities/brand.entity';
@@ -37,12 +37,15 @@ export class ProductService {
   }
 
   findAll() {
-    return this.productRepo.find();
+    return this.productRepo.find({
+      order: { images: { position: 'ASC' } },
+    });
   }
 
   findOne(id: string) {
     return this.productRepo.findOne({
       where: { id },
+      order: { images: { position: 'ASC' } },
     });
   }
 
@@ -157,5 +160,14 @@ export class ProductService {
     if (products === undefined) products = await this.findAll();
     const searchProducts = products.map(ProductService.transformProductToSearchDto);
     return this.searchService.bulkIndexProducts(searchProducts);
+  }
+
+  async searchProducts(query: string) {
+    const productIds = await this.searchService.searchProducts(query);
+
+    return await this.productRepo.find({
+      where: { id: In(productIds) },
+      order: { images: { position: 'ASC' } },
+    });
   }
 }

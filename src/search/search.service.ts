@@ -53,11 +53,14 @@ export class SearchService {
     // Make sure `hits.hits` exists and avoid `.map()` throwing errors
     const hits = response.hits?.hits || [];
 
+    // // Make the returned data more in line with business needs, remove the _id and _source structures, and merge them into a simpler JSON
+    // return hits.map((hit) => ({
+    //   id: hit._id,
+    //   ...hit._source,
+    // }));
+
     // Make the returned data more in line with business needs, remove the _id and _source structures, and merge them into a simpler JSON
-    return hits.map((hit) => ({
-      id: hit._id,
-      ...hit._source,
-    }));
+    return hits.map((hit) => hit._id);
   }
 
   async bulkIndexProducts(products: SearchProductDto[]) {

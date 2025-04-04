@@ -127,23 +127,6 @@ query {
 
 ```
 
-### Create user settings
-
-```graphql
-mutation {
-    createUserSettings(
-        createUserSettingsInput: {
-            userId: "905081365494623249"
-            receiveEmails: true
-            receiveNotifications: false
-        }
-    ) {
-        id
-        userId
-    }
-}
-
-```
 
 ### Get products
 
@@ -434,11 +417,11 @@ mutation {
             category: { name: "Home Appliances" }
             images: [
                 {
-                    url: "https://images.homedepot.ca/productimages/p_1000987654.jpg?product-images=l"
+                    url: "https://images.thdstatic.com/productImages/4c937e70-256c-4a4e-a8c5-766aeacfd693/svn/matte-blue-velvet-kitchenaid-stand-mixers-ksm150psvb-64_600.jpg"
                     position: 1
                 }
                 {
-                    url: "https://i0.wp.com/toolguyd.com/blog/wp-content/uploads/2021/03/KitchenAid-Artisan-Mixer.jpg?resize=590%2C404&ssl=1"
+                    url: "https://images.thdstatic.com/productImages/dd1eae61-2b86-4e2e-858b-08b0873ff544/svn/matte-blue-velvet-kitchenaid-stand-mixers-ksm150psvb-77.1_max.jpg"
                     position: 2
                 }
             ]
