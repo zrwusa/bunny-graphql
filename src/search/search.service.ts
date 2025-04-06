@@ -7,9 +7,10 @@ export class SearchService {
   constructor(private readonly elasticsearchService: ElasticsearchService) {}
 
   async createProduct(product: SearchProductDto) {
+    const { id } = product;
     return this.elasticsearchService.create({
       index: 'products',
-      id: product.id,
+      id,
       document: product,
     });
   }
@@ -30,40 +31,74 @@ export class SearchService {
   }
 
   async searchProducts(query: string) {
-    if (!query || typeof query !== 'string') {
-      throw new BadRequestException('Query parameter is required and must be a string');
-    }
+    const isEmptyQuery = !query?.trim();
 
     const response = await this.elasticsearchService.search<SearchProductDto>({
       index: 'products',
-      query: {
-        multi_match: {
-          query,
-          fields: [
-            'name^3',
-            'description.overview.model^3', // Nested object search `model`
-            'description.overview.description^2',
-            'category',
-            'brand',
-          ],
+      size: 20, // Restrictions to return up to 20 records
+      query: isEmptyQuery
+        ? { match_all: {} } // If query is empty, match all
+        : {
+            multi_match: {
+              query,
+              fields: [
+                'name^3',
+                'description.overview.model^3',
+                'description.overview.description^2',
+                'category',
+                'brand',
+              ],
+              operator: 'and', // All words must match
+            },
+          },
+      sort: isEmptyQuery
+        ? [{ id: { order: 'desc' } }] // When empty strings are created in reverse order (assuming you have this field)
+        : undefined,
+    });
+
+    return response.hits?.hits || [];
+  }
+
+  async bulkIndexProducts(products: SearchProductDto[]) {
+    const index = 'products';
+
+    const exists = await this.elasticsearchService.indices.exists({ index });
+
+    if (exists) {
+      await this.elasticsearchService.indices.delete({ index });
+      console.log(`Deleted index: ${index}`);
+    }
+
+    await this.elasticsearchService.indices.create({
+      index,
+      mappings: {
+        properties: {
+          id: { type: 'keyword' },
+          name: { type: 'text' },
+          category: { type: 'keyword' },
+          brand: { type: 'keyword' },
+          variants: { type: 'keyword' },
+          description: {
+            type: 'object',
+            properties: {
+              overview: {
+                type: 'object',
+                properties: {
+                  model: { type: 'text' },
+                  description: { type: 'text' },
+                },
+              },
+            },
+          },
+          suggest: {
+            type: 'completion',
+          },
         },
       },
     });
 
-    // Make sure `hits.hits` exists and avoid `.map()` throwing errors
-    const hits = response.hits?.hits || [];
+    console.log(`Created index '${index}' with custom mappings`);
 
-    // // Make the returned data more in line with business needs, remove the _id and _source structures, and merge them into a simpler JSON
-    // return hits.map((hit) => ({
-    //   id: hit._id,
-    //   ...hit._source,
-    // }));
-
-    // Make the returned data more in line with business needs, remove the _id and _source structures, and merge them into a simpler JSON
-    return hits.map((hit) => hit._id);
-  }
-
-  async bulkIndexProducts(products: SearchProductDto[]) {
     if (!products || products.length === 0) {
       throw new BadRequestException('Products array cannot be empty.');
     }
@@ -84,5 +119,73 @@ export class SearchService {
     ]);
 
     return this.elasticsearchService.bulk({ operations });
+  }
+
+  async suggestProducts(input: string) {
+    const isShort = input.trim().split(/\s+/).length <= 2;
+
+    if (isShort) {
+      // Prefix Association (suitable for fast input)
+      const result = await this.elasticsearchService.search<SearchProductDto>({
+        index: 'products',
+        suggest: {
+          product_suggest: {
+            prefix: input,
+            completion: {
+              field: 'suggest',
+              fuzzy: {
+                fuzziness: 2,
+                min_length: 3,
+                prefix_length: 1,
+                transpositions: true,
+              },
+              size: 10,
+            },
+          },
+        },
+      });
+
+      const suggestions = result.suggest?.product_suggest?.[0]?.options ?? [];
+      // If it is not an array, it can be wrapped into an array
+      return Array.isArray(suggestions) ? suggestions : [suggestions];
+    } else {
+      // Intermediate word matching (for full description)
+      const result = await this.elasticsearchService.search<SearchProductDto>({
+        index: 'products',
+        size: 10,
+        query: {
+          bool: {
+            should: [
+              {
+                match_phrase_prefix: {
+                  name: {
+                    query: input,
+                    boost: 3,
+                  },
+                },
+              },
+              {
+                match_phrase: {
+                  name: {
+                    query: input,
+                    boost: 2,
+                  },
+                },
+              },
+              {
+                multi_match: {
+                  query: input,
+                  fields: ['name^3', 'description.overview.description^2', 'brand', 'category'],
+                  type: 'best_fields',
+                },
+              },
+            ],
+          },
+        },
+        _source: ['name'],
+      });
+
+      return result.hits?.hits;
+    }
   }
 }

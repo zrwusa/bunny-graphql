@@ -28,11 +28,15 @@ export class ProductService {
   }: Product): SearchProductDto {
     return {
       id: id.toString(),
-      name: name,
+      name,
       description: description || {},
       category: category?.name || '',
       brand: brand?.name || '',
       variants: variants?.map((v) => v.size) || [],
+      suggest: {
+        input: [name],
+        weight: 1,
+      },
     };
   }
 
@@ -163,11 +167,16 @@ export class ProductService {
   }
 
   async searchProducts(query: string) {
-    const productIds = await this.searchService.searchProducts(query);
+    const productIds = (await this.searchService.searchProducts(query)).map((hit) => hit._id);
 
     return await this.productRepo.find({
       where: { id: In(productIds) },
       order: { images: { position: 'ASC' } },
     });
+  }
+
+  async suggestProductNames(input: string) {
+    const suggestOptions = await this.searchService.suggestProducts(input);
+    return suggestOptions.map((opt) => opt._source.name);
   }
 }

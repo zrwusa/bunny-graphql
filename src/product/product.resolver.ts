@@ -48,4 +48,9 @@ export class ProductResolver {
   async searchProducts(@Args('keyword') keyword: string) {
     return this.productService.searchProducts(keyword);
   }
+
+  @Query(() => [String])
+  async suggestProductNames(@Args('input') input: string) {
+    return this.productService.suggestProductNames(input);
+  }
 }
