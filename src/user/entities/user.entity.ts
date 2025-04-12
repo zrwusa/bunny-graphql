@@ -8,6 +8,7 @@ import { UserProfile } from './user-profile.entity';
 import { UserAddress } from './user-address.entity';
 import { UserPaymentMethod } from './user-payment-method.entity';
 import { ProductReview } from '../../product/entities/product-review.entity';
+import { CartSession } from '../../cart/entities/cart-session.entity';
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -25,13 +26,13 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   password?: string;
 
-  @Column({ unique: true, nullable: true })
-  @Field({ nullable: true })
-  oauthId?: string;
-
   @Column({ nullable: true })
   @Field({ nullable: true })
   provider?: string;
+
+  @Column({ unique: true, nullable: true })
+  @Field({ nullable: true })
+  providerId?: string;
 
   @Field(() => UserPreference, { nullable: true })
   @OneToOne(() => UserPreference, (preference) => preference.user, {
@@ -64,4 +65,8 @@ export class User extends BaseEntity {
   @OneToMany(() => ProductReview, (review) => review.user)
   @Field(() => [ProductReview], { nullable: true })
   reviews?: ProductReview[];
+
+  @Field(() => [CartSession], { nullable: true })
+  @OneToMany(() => CartSession, (session) => session.user)
+  cartSessions?: CartSession[];
 }

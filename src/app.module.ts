@@ -30,6 +30,10 @@ import { Warehouse } from './product/entities/warehouse.entity';
 import { Brand } from './product/entities/brand.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { SearchModule } from './search/search.module';
+import { CartModule } from './cart/cart.module';
+import { AuthModule } from './auth/auth.module';
+import { CartSession } from './cart/entities/cart-session.entity';
+import { CartItem } from './cart/entities/cart-item.entity';
 
 @Module({
   imports: [
@@ -68,6 +72,8 @@ import { SearchModule } from './search/search.module';
             Product,
             Brand,
             Category,
+            CartSession,
+            CartItem,
             Inventory,
             ProductImage,
             ProductPrice,
@@ -94,6 +100,8 @@ import { SearchModule } from './search/search.module';
     PaymentModule,
     ShipmentModule,
     SearchModule,
+    CartModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [AppResolver],
